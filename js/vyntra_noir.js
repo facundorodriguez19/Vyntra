@@ -193,10 +193,24 @@ const productId = (title) => String(title || 'producto')
   .replace(/[^a-z0-9]+/g, '-')
   .replace(/(^-|-$)/g, '');
 
+const normalizeCartItem = (item) => {
+  const enhancement = getEnhancement(item?.title || '');
+  const fallbackImage = enhancement.images?.[0] || item?.src || '';
+  const hasLegacyImage = /WhatsApp(?:%20|\s)Image|acc-|vytra_hero/.test(item?.src || '');
+  return {
+    ...item,
+    src: hasLegacyImage ? fallbackImage : (item?.src || fallbackImage),
+    alt: item?.alt || item?.title || 'Producto VYNTRA',
+    id: item?.id || [productId(item?.title), item?.selectedColor, item?.selectedSize].filter(Boolean).join('-'),
+    priceValue: Number.isFinite(Number(item?.priceValue)) ? Number(item.priceValue) : parsePrice(item?.price),
+    quantity: Math.max(1, Number(item?.quantity || 1))
+  };
+};
+
 const loadCart = () => {
   try {
     const stored = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || '[]');
-    return Array.isArray(stored) ? stored : [];
+    return Array.isArray(stored) ? stored.map(normalizeCartItem) : [];
   } catch {
     return [];
   }
@@ -324,6 +338,7 @@ const buildOrderEmail = (customer) => {
 };
 
 cart = loadCart();
+saveCart();
 renderCart();
 
 const getProductData = (card, image) => {
