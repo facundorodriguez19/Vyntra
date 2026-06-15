@@ -106,41 +106,74 @@ const escapeHTML = (value) => String(value || '').replace(/[&<>"']/g, (char) => 
 
 const PRODUCT_VARIANTS = [
   {
-    match: /not your average|indigo/i,
-    images: ['images/WhatsApp Image 2026-05-29 at 10.07.05.jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.05 (1).jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.06 (1).jpeg'],
+    match: /signature back indigo/i,
+    images: ['images/products/signature-back-indigo-front.jpg', 'images/products/signature-back-indigo-hover.jpg'],
+    colors: [{ name: 'Indigo', value: '#24364f' }, { name: 'Grafito', value: '#2d2d2d' }, { name: 'Arena', value: '#bfa06a' }],
+    sizes: ['S', 'M', 'L', 'XL']
+  },
+  {
+    match: /not your average|kit [íi]ndigo/i,
+    images: ['images/products/not-average-indigo-front.jpg', 'images/products/not-average-indigo-hover.jpg'],
     colors: [{ name: 'Indigo', value: '#24364f' }, { name: 'Blanco', value: '#ebe6dc' }, { name: 'Grafito', value: '#2d2d2d' }],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    match: /camisa|blanca|silent power blanco/i,
-    images: ['images/WhatsApp Image 2026-05-29 at 10.07.05 (1).jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.06 (2).jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.07.jpeg'],
+    match: /camisa|kit blanco/i,
+    images: ['images/products/camisa-oversized-blanca-front.jpg', 'images/products/camisa-oversized-blanca-hover.jpg'],
     colors: [{ name: 'Blanco', value: '#ebe6dc' }, { name: 'Indigo', value: '#24364f' }, { name: 'Pizarra', value: '#6d6b67' }],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    match: /signature|grey/i,
-    images: ['images/WhatsApp Image 2026-05-29 at 10.07.07.jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.06.jpeg', 'images/WhatsApp Image 2026-05-29 at 10.07.06 (3).jpeg'],
+    match: /signature grey|kit signature/i,
+    images: ['images/products/signature-grey-front.jpg', 'images/products/signature-grey-hover.jpg'],
     colors: [{ name: 'Grey', value: '#6f6b65' }, { name: 'Negro', value: '#101010' }, { name: 'Arena', value: '#bfa06a' }],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    match: /hoodie|silent power/i,
-    images: ['images/vytra_hero.png', 'images/vytra_hero_generic.png', 'images/WhatsApp Image 2026-05-29 at 10.07.06 (3).jpeg'],
+    match: /silent power blanco/i,
+    images: ['images/products/silent-power-blanco-front.jpg', 'images/products/silent-power-blanco-hover.jpg'],
+    colors: [{ name: 'Blanco', value: '#ebe6dc' }, { name: 'Indigo', value: '#24364f' }, { name: 'Negro', value: '#101010' }],
+    sizes: ['S', 'M', 'L', 'XL']
+  },
+  {
+    match: /hoodie|kit silent power/i,
+    images: ['images/products/hoodie-silent-power-front.jpg', 'images/products/hoodie-silent-power-hover.jpg'],
     colors: [{ name: 'Negro', value: '#0c0c0c' }, { name: 'Dorado', value: '#BFA06A' }],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    match: /dije|cadena|llavero/i,
+    match: /dije/i,
+    images: ['images/products/dije-pegasus-front.jpg', 'images/products/dije-pegasus-hover.jpg'],
     colors: [{ name: 'Gold', value: '#BFA06A' }, { name: 'Noir', value: '#111111' }],
     sizes: ['OS']
   },
   {
-    match: /perfume/i,
+    match: /llavero/i,
+    images: ['images/products/llavero-signature-front.jpg', 'images/products/llavero-signature-hover.jpg'],
+    colors: [{ name: 'Noir', value: '#111111' }, { name: 'Gold', value: '#BFA06A' }],
+    sizes: ['OS']
+  },
+  {
+    match: /cadena/i,
+    images: ['images/products/cadena-silent-front.jpg', 'images/products/cadena-silent-hover.jpg'],
+    colors: [{ name: 'Gold', value: '#BFA06A' }, { name: 'Noir', value: '#111111' }],
+    sizes: ['OS']
+  },
+  {
+    match: /perfume solar/i,
+    images: ['images/products/perfume-solar-front.jpg', 'images/products/perfume-solar-hover.jpg'],
     colors: [{ name: 'Solar', value: '#d5b169' }, { name: 'Intenso', value: '#2a211d' }],
     sizes: ['50ML', '100ML']
   },
   {
-    match: /tote|kit/i,
+    match: /perfume intenso/i,
+    images: ['images/products/perfume-intenso-front.jpg', 'images/products/perfume-intenso-hover.jpg'],
+    colors: [{ name: 'Intenso', value: '#2a211d' }, { name: 'Solar', value: '#d5b169' }],
+    sizes: ['50ML', '100ML']
+  },
+  {
+    match: /tote/i,
+    images: ['images/products/tote-drop-front.jpg', 'images/products/tote-drop-hover.jpg'],
     colors: [{ name: 'Noir', value: '#111111' }, { name: 'Natural', value: '#d6c7ad' }],
     sizes: ['OS']
   }
@@ -391,7 +424,7 @@ const setCardImage = (imageWrap, image, src, altImage) => {
 
 const enhanceProductCard = (imageWrap) => {
   const image = imageWrap.querySelector('img');
-  const card = imageWrap.closest('.catalog-card, .prod, .kit');
+  const card = imageWrap.closest('.catalog-card, .prod, .kit, .feature-panel');
   if (!image || !card || imageWrap.dataset.enhancedProduct === 'true') return;
 
   imageWrap.dataset.enhancedProduct = 'true';
@@ -419,8 +452,8 @@ const enhanceProductCard = (imageWrap) => {
   quickView.textContent = 'Quick View';
   imageWrap.appendChild(quickView);
 
-  const body = card.querySelector('.catalog-body, .prod-body, .kit-body');
-  const target = card.querySelector('.catalog-bottom, .prod-bottom, .kit-price');
+  const body = card.querySelector('.catalog-body, .prod-body, .kit-body') || card.querySelector(':scope > div:not(.feature-product-img)');
+  const target = card.querySelector('.catalog-bottom, .prod-bottom, .kit-price, .feature-price');
   if (body && target && !body.querySelector('.product-card-meta')) {
     const meta = document.createElement('div');
     meta.className = 'product-card-meta';
@@ -465,6 +498,29 @@ document.querySelectorAll('.catalog-img, .prod-img, .kit-img').forEach((imageWra
   const card = imageWrap.closest('.catalog-card, .prod, .kit, .feature-panel');
   if (!image || !card) return;
 
+  imageWrap.setAttribute('role', 'button');
+  imageWrap.setAttribute('tabindex', '0');
+  imageWrap.setAttribute('aria-label', `Ver detalle de ${image.alt || 'producto'}`);
+
+  const open = () => openProductModal(getProductData(card, image));
+  imageWrap.addEventListener('click', open);
+  imageWrap.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    open();
+  });
+});
+
+document.querySelectorAll('.feature-panel > img').forEach((image) => {
+  const card = image.closest('.feature-panel');
+  if (!card || card.querySelector('.feature-product-img')) return;
+
+  const imageWrap = document.createElement('div');
+  imageWrap.className = 'feature-product-img';
+  card.insertBefore(imageWrap, image);
+  imageWrap.appendChild(image);
+
+  enhanceProductCard(imageWrap);
   imageWrap.setAttribute('role', 'button');
   imageWrap.setAttribute('tabindex', '0');
   imageWrap.setAttribute('aria-label', `Ver detalle de ${image.alt || 'producto'}`);

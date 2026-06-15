@@ -420,7 +420,8 @@ nav {
 
 .prod-img::after,
 .catalog-img::after,
-.kit-img::after {
+.kit-img::after,
+.feature-product-img::after {
   content: 'Quick View';
   position: absolute;
   left: 1rem;
@@ -471,6 +472,7 @@ nav {
 .prod-img:hover .quick-view-btn,
 .catalog-img:hover .quick-view-btn,
 .kit-img:hover .quick-view-btn,
+.feature-product-img:hover .quick-view-btn,
 .quick-view-btn:focus-visible {
   opacity: 1;
   transform: translate(-50%, 0);
@@ -478,7 +480,8 @@ nav {
 
 .prod-img.has-quick-view::after,
 .catalog-img.has-quick-view::after,
-.kit-img.has-quick-view::after {
+.kit-img.has-quick-view::after,
+.feature-product-img.has-quick-view::after {
   content: none;
 }
 
@@ -486,30 +489,35 @@ nav {
   position: absolute;
   inset: 0;
   opacity: 0;
+  transform: scale(1.015);
 }
 
 .catalog-img.has-alt-image img,
 .prod-img.has-alt-image img,
-.kit-img.has-alt-image img {
+.kit-img.has-alt-image img,
+.feature-product-img.has-alt-image img {
   transition: opacity .42s ease, transform .7s ease;
 }
 
 .catalog-card:hover .catalog-img.has-alt-image > img:first-child,
 .prod:hover .prod-img.has-alt-image > img:first-child,
-.kit:hover .kit-img.has-alt-image > img:first-child {
+.kit:hover .kit-img.has-alt-image > img:first-child,
+.feature-panel:hover .feature-product-img.has-alt-image > img:first-child {
   opacity: 0;
 }
 
 .catalog-card:hover .product-alt-image,
 .prod:hover .product-alt-image,
-.kit:hover .product-alt-image {
+.kit:hover .product-alt-image,
+.feature-panel:hover .product-alt-image {
   opacity: 1;
-  transform: scale(1.04);
+  transform: scale(1.055);
 }
 
 .prod-img:hover::after,
 .catalog-img:hover::after,
-.kit-img:hover::after {
+.kit-img:hover::after,
+.feature-product-img:hover::after {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1511,7 +1519,25 @@ nav {
   display: block;
 }
 
+.feature-product-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 160px;
+  overflow: hidden;
+  background: var(--b3);
+  cursor: pointer;
+}
+
+.feature-product-img img {
+  min-height: 100%;
+}
+
 .feature-panel.large img {
+  min-height: 520px;
+}
+
+.feature-panel.large .feature-product-img {
   min-height: 520px;
 }
 
