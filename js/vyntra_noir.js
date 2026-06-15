@@ -108,79 +108,74 @@ const PRODUCT_VARIANTS = [
   {
     match: /signature back indigo/i,
     images: ['images/products/signature-back-indigo-front.jpg', 'images/products/signature-back-indigo-hover.jpg'],
-    colors: [{ name: 'Indigo', value: '#24364f' }, { name: 'Grafito', value: '#2d2d2d' }, { name: 'Arena', value: '#bfa06a' }],
+    colors: [
+      { name: 'Indigo', value: '#24364f', images: ['images/products/signature-back-indigo-front.jpg', 'images/products/signature-back-indigo-hover.jpg'] },
+      { name: 'Grafito', value: '#2d2d2d', images: ['images/products/signature-back-grafito-front.jpg', 'images/products/signature-back-grafito-hover.jpg'] },
+      { name: 'Arena', value: '#bfa06a', images: ['images/products/signature-back-arena-front.jpg', 'images/products/signature-back-arena-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
-    match: /not your average|kit [íi]ndigo/i,
+    match: /not your average|kit indigo/i,
     images: ['images/products/not-average-indigo-front.jpg', 'images/products/not-average-indigo-hover.jpg'],
-    colors: [{ name: 'Indigo', value: '#24364f' }, { name: 'Blanco', value: '#ebe6dc' }, { name: 'Grafito', value: '#2d2d2d' }],
+    colors: [
+      { name: 'Indigo', value: '#24364f', images: ['images/products/not-average-indigo-front.jpg', 'images/products/not-average-indigo-hover.jpg'] },
+      { name: 'Blanco', value: '#ebe6dc', images: ['images/products/not-average-blanco-front.jpg', 'images/products/not-average-blanco-hover.jpg'] },
+      { name: 'Grafito', value: '#2d2d2d', images: ['images/products/not-average-grafito-front.jpg', 'images/products/not-average-grafito-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
     match: /camisa|kit blanco/i,
     images: ['images/products/camisa-oversized-blanca-front.jpg', 'images/products/camisa-oversized-blanca-hover.jpg'],
-    colors: [{ name: 'Blanco', value: '#ebe6dc' }, { name: 'Indigo', value: '#24364f' }, { name: 'Pizarra', value: '#6d6b67' }],
+    colors: [
+      { name: 'Blanco', value: '#ebe6dc', images: ['images/products/camisa-oversized-blanca-front.jpg', 'images/products/camisa-oversized-blanca-hover.jpg'] },
+      { name: 'Indigo', value: '#24364f', images: ['images/products/camisa-oversized-indigo-front.jpg', 'images/products/camisa-oversized-indigo-hover.jpg'] },
+      { name: 'Pizarra', value: '#6d6b67', images: ['images/products/camisa-oversized-pizarra-front.jpg', 'images/products/camisa-oversized-pizarra-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
     match: /signature grey|kit signature/i,
     images: ['images/products/signature-grey-front.jpg', 'images/products/signature-grey-hover.jpg'],
-    colors: [{ name: 'Grey', value: '#6f6b65' }, { name: 'Negro', value: '#101010' }, { name: 'Arena', value: '#bfa06a' }],
+    colors: [
+      { name: 'Grey', value: '#6f6b65', images: ['images/products/signature-grey-front.jpg', 'images/products/signature-grey-hover.jpg'] },
+      { name: 'Negro', value: '#101010', images: ['images/products/signature-negro-front.jpg', 'images/products/signature-negro-hover.jpg'] },
+      { name: 'Arena', value: '#bfa06a', images: ['images/products/signature-arena-front.jpg', 'images/products/signature-arena-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
     match: /silent power blanco/i,
     images: ['images/products/silent-power-blanco-front.jpg', 'images/products/silent-power-blanco-hover.jpg'],
-    colors: [{ name: 'Blanco', value: '#ebe6dc' }, { name: 'Indigo', value: '#24364f' }, { name: 'Negro', value: '#101010' }],
+    colors: [
+      { name: 'Blanco', value: '#ebe6dc', images: ['images/products/silent-power-blanco-front.jpg', 'images/products/silent-power-blanco-hover.jpg'] },
+      { name: 'Indigo', value: '#24364f', images: ['images/products/silent-power-indigo-front.jpg', 'images/products/silent-power-indigo-hover.jpg'] },
+      { name: 'Negro', value: '#101010', images: ['images/products/silent-power-negro-front.jpg', 'images/products/silent-power-negro-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
   {
     match: /hoodie|kit silent power/i,
     images: ['images/products/hoodie-silent-power-front.jpg', 'images/products/hoodie-silent-power-hover.jpg'],
-    colors: [{ name: 'Negro', value: '#0c0c0c' }, { name: 'Dorado', value: '#BFA06A' }],
+    colors: [
+      { name: 'Negro', value: '#0c0c0c', images: ['images/products/hoodie-silent-power-front.jpg', 'images/products/hoodie-silent-power-hover.jpg'] },
+      { name: 'Dorado', value: '#BFA06A', images: ['images/products/hoodie-silent-power-dorado-front.jpg', 'images/products/hoodie-silent-power-dorado-hover.jpg'] }
+    ],
     sizes: ['S', 'M', 'L', 'XL']
   },
-  {
-    match: /dije/i,
-    images: ['images/products/dije-pegasus-front.jpg', 'images/products/dije-pegasus-hover.jpg'],
-    colors: [{ name: 'Gold', value: '#BFA06A' }, { name: 'Noir', value: '#111111' }],
-    sizes: ['OS']
-  },
-  {
-    match: /llavero/i,
-    images: ['images/products/llavero-signature-front.jpg', 'images/products/llavero-signature-hover.jpg'],
-    colors: [{ name: 'Noir', value: '#111111' }, { name: 'Gold', value: '#BFA06A' }],
-    sizes: ['OS']
-  },
-  {
-    match: /cadena/i,
-    images: ['images/products/cadena-silent-front.jpg', 'images/products/cadena-silent-hover.jpg'],
-    colors: [{ name: 'Gold', value: '#BFA06A' }, { name: 'Noir', value: '#111111' }],
-    sizes: ['OS']
-  },
-  {
-    match: /perfume solar/i,
-    images: ['images/products/perfume-solar-front.jpg', 'images/products/perfume-solar-hover.jpg'],
-    colors: [{ name: 'Solar', value: '#d5b169' }, { name: 'Intenso', value: '#2a211d' }],
-    sizes: ['50ML', '100ML']
-  },
-  {
-    match: /perfume intenso/i,
-    images: ['images/products/perfume-intenso-front.jpg', 'images/products/perfume-intenso-hover.jpg'],
-    colors: [{ name: 'Intenso', value: '#2a211d' }, { name: 'Solar', value: '#d5b169' }],
-    sizes: ['50ML', '100ML']
-  },
-  {
-    match: /tote/i,
-    images: ['images/products/tote-drop-front.jpg', 'images/products/tote-drop-hover.jpg'],
-    colors: [{ name: 'Noir', value: '#111111' }, { name: 'Natural', value: '#d6c7ad' }],
-    sizes: ['OS']
-  }
+  { match: /dije/i, images: ['images/products/dije-pegasus-front.jpg', 'images/products/dije-pegasus-hover.jpg'], sizes: ['OS'] },
+  { match: /llavero/i, images: ['images/products/llavero-signature-front.jpg', 'images/products/llavero-signature-hover.jpg'], sizes: ['OS'] },
+  { match: /cadena/i, images: ['images/products/cadena-silent-front.jpg', 'images/products/cadena-silent-hover.jpg'], sizes: ['OS'] },
+  { match: /perfume solar/i, images: ['images/products/perfume-solar-front.jpg', 'images/products/perfume-solar-hover.jpg'], sizes: ['50ML', '100ML'] },
+  { match: /perfume intenso/i, images: ['images/products/perfume-intenso-front.jpg', 'images/products/perfume-intenso-hover.jpg'], sizes: ['50ML', '100ML'] },
+  { match: /tote/i, images: ['images/products/tote-drop-front.jpg', 'images/products/tote-drop-hover.jpg'], sizes: ['OS'] }
 ];
 
-const getEnhancement = (title) => PRODUCT_VARIANTS.find((entry) => entry.match.test(title || '')) || {
-  colors: [{ name: 'Noir', value: '#111111' }, { name: 'Gold', value: '#BFA06A' }],
+const normalizeText = (value) => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+const getEnhancement = (title) => PRODUCT_VARIANTS.find((entry) => entry.match.test(normalizeText(title))) || {
+  colors: [],
   sizes: ['OS']
 };
 
@@ -341,6 +336,11 @@ cart = loadCart();
 saveCart();
 renderCart();
 
+const getColorImages = (enhancement, colorName) => {
+  const color = enhancement.colors?.find((entry) => entry.name === colorName);
+  return color?.images || enhancement.images || [];
+};
+
 const getProductData = (card, image) => {
   const title = card.querySelector('.catalog-body h3, .prod-name, .kit-name, .feature-panel h2, .feature-panel h3, .ed-h2')?.textContent?.trim() || image.alt || 'Producto VYNTRA';
   const description = card.querySelector('.catalog-body p, .prod-desc, .kit-items, .feature-panel p, .ed-body')?.textContent?.trim() || 'Pieza seleccionada de la colección VYNTRA.';
@@ -349,6 +349,7 @@ const getProductData = (card, image) => {
   const enhancement = getEnhancement(title);
   const selectedColor = card.dataset.selectedColor || enhancement.colors?.[0]?.name || '';
   const selectedSize = card.dataset.selectedSize || enhancement.sizes?.[0] || '';
+  const selectedImages = getColorImages(enhancement, selectedColor);
   return {
     id: productId(title),
     title,
@@ -356,10 +357,11 @@ const getProductData = (card, image) => {
     price,
     priceValue: parsePrice(price),
     kicker,
-    src: image.currentSrc || image.src,
+    src: selectedImages[0] || image.currentSrc || image.src,
     alt: image.alt || title,
     colors: enhancement.colors || [],
     sizes: enhancement.sizes || [],
+    images: selectedImages,
     selectedColor,
     selectedSize
   };
@@ -419,7 +421,13 @@ modalOptions.addEventListener('click', (event) => {
   const sizeButton = event.target.closest('[data-modal-size]');
   if (!colorButton && !sizeButton) return;
 
-  if (colorButton) activeModalProduct.selectedColor = colorButton.dataset.modalColor;
+  if (colorButton) {
+    activeModalProduct.selectedColor = colorButton.dataset.modalColor;
+    const enhancement = getEnhancement(activeModalProduct.title);
+    activeModalProduct.images = getColorImages(enhancement, activeModalProduct.selectedColor);
+    activeModalProduct.src = activeModalProduct.images[0] || activeModalProduct.src;
+    modalImage.src = activeModalProduct.src;
+  }
   if (sizeButton) activeModalProduct.selectedSize = sizeButton.dataset.modalSize;
   renderModalOptions(activeModalProduct);
 });
@@ -449,9 +457,10 @@ const enhanceProductCard = (imageWrap) => {
   const enhancement = getEnhancement(data.title);
   card.dataset.selectedColor = data.selectedColor;
   card.dataset.selectedSize = data.selectedSize;
+  const initialImages = getColorImages(enhancement, data.selectedColor);
 
   let altImage = imageWrap.querySelector('.product-alt-image');
-  const alternateSrc = enhancement.images?.find((src) => src !== image.getAttribute('src'));
+  const alternateSrc = initialImages[1] || enhancement.images?.find((src) => src !== image.getAttribute('src'));
   if (alternateSrc) {
     altImage = document.createElement('img');
     altImage.className = 'product-alt-image';
@@ -473,10 +482,10 @@ const enhanceProductCard = (imageWrap) => {
     const meta = document.createElement('div');
     meta.className = 'product-card-meta';
     const swatches = (enhancement.colors || []).slice(0, 4).map((color, index) => `
-      <button class="product-swatch${index === 0 ? ' is-active' : ''}" type="button" aria-label="${escapeHTML(color.name)}" data-card-color="${escapeHTML(color.name)}" data-card-image="${escapeHTML(enhancement.images?.[index] || image.getAttribute('src'))}" style="--swatch:${escapeHTML(color.value)}"></button>
+      <button class="product-swatch${index === 0 ? ' is-active' : ''}" type="button" aria-label="${escapeHTML(color.name)}" data-card-color="${escapeHTML(color.name)}" data-card-image="${escapeHTML(color.images?.[0] || image.getAttribute('src'))}" data-card-hover="${escapeHTML(color.images?.[1] || color.images?.[0] || image.getAttribute('src'))}" style="--swatch:${escapeHTML(color.value)}"></button>
     `).join('');
     const sizes = (enhancement.sizes || []).slice(0, 4).map((size, index) => renderChoiceButton(size, index === 0 ? size : '', 'product-size', `data-card-size="${escapeHTML(size)}"`)).join('');
-    meta.innerHTML = `<div class="product-swatches">${swatches}</div><div class="product-sizes">${sizes}</div>`;
+    meta.innerHTML = `${swatches ? `<div class="product-swatches">${swatches}</div>` : ''}<div class="product-sizes">${sizes}</div>`;
     body.insertBefore(meta, target);
   }
 
@@ -492,6 +501,7 @@ const enhanceProductCard = (imageWrap) => {
       card.dataset.selectedColor = swatch.dataset.cardColor;
       swatch.parentElement.querySelectorAll('.product-swatch').forEach((button) => button.classList.toggle('is-active', button === swatch));
       if (swatch.dataset.cardImage) setCardImage(imageWrap, image, swatch.dataset.cardImage, altImage);
+      if (altImage && swatch.dataset.cardHover) altImage.src = swatch.dataset.cardHover;
     }
 
     if (size) {
