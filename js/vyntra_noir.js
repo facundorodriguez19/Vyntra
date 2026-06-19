@@ -1,7 +1,10 @@
 const menuButton = document.querySelector('.nav-ham');
 const mobileMenu = document.querySelector('.mob');
+const navEnd = document.querySelector('.nav-end');
 const cartButtons = document.querySelectorAll('.nav-cta');
 const cartCounts = document.querySelectorAll('.cart-count');
+const authLoginLinks = document.querySelectorAll('[data-auth-login]');
+const authRegisterLinks = document.querySelectorAll('[data-auth-register]');
 const scrollProgress = document.createElement('div');
 const productModal = document.createElement('div');
 const cartDrawer = document.createElement('div');
@@ -76,6 +79,143 @@ const cartStatusEl = cartDrawer.querySelector('.cart-status');
 
 modalOptions.className = 'product-modal-options';
 modalPrice.insertAdjacentElement('afterend', modalOptions);
+
+const updateAuthNavigation = async () => {
+  if (!authLoginLinks.length && !authRegisterLinks.length) return;
+
+  try {
+    const response = await fetch('api/session.php', {
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!data.authenticated || !data.user) return;
+
+    const firstName = String(data.user.name || 'Cuenta').trim().split(/\s+/)[0] || 'Cuenta';
+    authLoginLinks.forEach((link) => {
+      link.textContent = `Hola, ${firstName}`;
+      link.href = 'logout.php';
+      link.title = 'Cerrar sesión';
+      link.classList.add('is-authenticated');
+    });
+
+    authRegisterLinks.forEach((link) => {
+      link.textContent = 'Salir';
+      link.href = 'logout.php';
+      link.classList.add('is-authenticated');
+    });
+  } catch {
+    // El sitio puede abrirse como archivo local antes de pasar por XAMPP.
+  }
+};
+
+updateAuthNavigation();
+
+const createAmbientController = () => {
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!navEnd || !AudioContextClass) return null;
+
+  const button = document.createElement('button');
+  button.className = 'ambient-toggle';
+  button.type = 'button';
+  button.setAttribute('aria-pressed', 'false');
+  button.innerHTML = '<span class="ambient-dot" aria-hidden="true"></span><span class="ambient-label">Ambiente</span>';
+
+  const cartButton = navEnd.querySelector('.nav-cta');
+  navEnd.insertBefore(button, cartButton || navEnd.firstChild);
+
+  let state = null;
+
+  const stopAmbient = (quick = false) => {
+    if (!state) return;
+
+    const { context, master, nodes } = state;
+    const now = context.currentTime;
+    master.gain.cancelScheduledValues(now);
+    master.gain.setTargetAtTime(0, now, quick ? 0.02 : 0.32);
+
+    window.setTimeout(() => {
+      nodes.forEach((node) => {
+        try {
+          node.stop();
+        } catch {
+          // Osciladores ya detenidos.
+        }
+      });
+      context.close?.();
+    }, quick ? 80 : 950);
+
+    state = null;
+    button.classList.remove('is-on');
+    button.setAttribute('aria-pressed', 'false');
+  };
+
+  const startAmbient = async () => {
+    if (state) {
+      stopAmbient();
+      return;
+    }
+
+    const context = new AudioContextClass();
+    const master = context.createGain();
+    const filter = context.createBiquadFilter();
+    const delay = context.createDelay(3);
+    const feedback = context.createGain();
+    const wet = context.createGain();
+    const dry = context.createGain();
+    const nodes = [];
+
+    master.gain.value = 0;
+    filter.type = 'lowpass';
+    filter.frequency.value = 820;
+    filter.Q.value = 0.42;
+    delay.delayTime.value = 1.8;
+    feedback.gain.value = 0.18;
+    wet.gain.value = 0.22;
+    dry.gain.value = 0.9;
+
+    filter.connect(dry).connect(master);
+    filter.connect(delay);
+    delay.connect(feedback).connect(delay);
+    delay.connect(wet).connect(master);
+    master.connect(context.destination);
+
+    const chord = [130.81, 196.0, 246.94, 329.63];
+    chord.forEach((frequency, index) => {
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      const lfo = context.createOscillator();
+      const lfoDepth = context.createGain();
+
+      oscillator.type = index % 2 === 0 ? 'sine' : 'triangle';
+      oscillator.frequency.value = frequency;
+      oscillator.detune.value = (index - 1.5) * 4;
+      gain.gain.value = 0.022 + index * 0.003;
+      lfo.frequency.value = 0.035 + index * 0.012;
+      lfoDepth.gain.value = 0.006;
+
+      lfo.connect(lfoDepth).connect(gain.gain);
+      oscillator.connect(gain).connect(filter);
+      oscillator.start();
+      lfo.start();
+      nodes.push(oscillator, lfo);
+    });
+
+    state = { context, master, nodes };
+    await context.resume();
+    master.gain.setTargetAtTime(0.62, context.currentTime, 0.55);
+    button.classList.add('is-on');
+    button.setAttribute('aria-pressed', 'true');
+  };
+
+  button.addEventListener('click', startAmbient);
+  window.addEventListener('pagehide', () => stopAmbient(true));
+  return button;
+};
+
+createAmbientController();
 
 menuButton?.addEventListener('click', () => {
   const isOpen = mobileMenu.classList.toggle('open');

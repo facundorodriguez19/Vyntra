@@ -149,6 +149,59 @@ nav {
   color: var(--b);
 }
 
+.nav-auth-link.is-authenticated {
+  color: var(--g);
+}
+
+.ambient-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 36px;
+  border: 1px solid var(--g3);
+  background: none;
+  color: var(--d3);
+  padding: 0 .85rem;
+  font-family: inherit;
+  font-size: .56rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color .3s, color .3s, background .3s;
+}
+
+.ambient-toggle:hover,
+.ambient-toggle.is-on {
+  border-color: var(--g);
+  color: var(--g);
+  background: var(--g4);
+}
+
+.ambient-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--d2);
+  transition: background .3s, box-shadow .3s;
+}
+
+.ambient-toggle.is-on .ambient-dot {
+  background: var(--g);
+  box-shadow: 0 0 0 6px rgba(191, 160, 106, .12);
+  animation: ambientPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes ambientPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px rgba(191, 160, 106, .1);
+  }
+
+  50% {
+    box-shadow: 0 0 0 9px rgba(191, 160, 106, .2);
+  }
+}
+
 .nav-ham {
   display: none;
   background: none;
@@ -1686,6 +1739,115 @@ nav {
   border-color: var(--g);
 }
 
+/* AUTH */
+.auth-shell {
+  width: min(100% - 3rem, 1180px);
+  min-height: calc(100vh - 66px);
+  margin: 0 auto;
+  padding: clamp(3rem, 6vw, 5rem) 0;
+  display: grid;
+  grid-template-columns: .95fr 1.05fr;
+  gap: 1px;
+  background: var(--b4);
+  align-items: stretch;
+}
+
+.auth-copy,
+.auth-card {
+  background: var(--b2);
+  padding: clamp(1.6rem, 4vw, 3.4rem);
+}
+
+.auth-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-copy h1,
+.auth-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--w);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.auth-copy h1 {
+  font-size: clamp(2.7rem, 6vw, 5rem);
+  margin-bottom: 1.2rem;
+}
+
+.auth-copy p {
+  max-width: 460px;
+  color: var(--w2);
+  line-height: 1.85;
+  font-size: .9rem;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  border: 1px solid var(--g3);
+}
+
+.auth-card h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  margin-bottom: .4rem;
+}
+
+.auth-card label {
+  display: grid;
+  gap: .45rem;
+  color: var(--g);
+  font-size: .58rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.auth-card input {
+  width: 100%;
+  border: 1px solid var(--g3);
+  background: var(--b);
+  color: var(--w);
+  padding: .95rem 1rem;
+  font: inherit;
+  font-size: .86rem;
+  outline: none;
+}
+
+.auth-card input:focus {
+  border-color: var(--g);
+}
+
+.auth-alert {
+  border: 1px solid rgba(191, 160, 106, .35);
+  background: rgba(191, 160, 106, .08);
+  color: var(--w2);
+  padding: .9rem 1rem;
+  display: grid;
+  gap: .35rem;
+}
+
+.auth-alert p {
+  font-size: .72rem;
+  line-height: 1.55;
+}
+
+.auth-switch {
+  color: var(--d3);
+  font-size: .72rem;
+  line-height: 1.6;
+}
+
+.auth-switch a {
+  color: var(--g);
+  text-decoration: none;
+  font-weight: 800;
+}
+
 /* PRODUCT MODAL */
 .product-modal {
   position: fixed;
@@ -2218,9 +2380,51 @@ footer {
   color: var(--g);
 }
 
+@media(max-width:1120px) {
+  nav {
+    padding: 0 1.25rem;
+  }
+
+  .nav-center {
+    gap: .9rem;
+  }
+
+  .nav-end {
+    gap: .55rem;
+  }
+
+  .nav-cta {
+    padding: 8px 14px;
+  }
+
+  .ambient-label {
+    display: none;
+  }
+
+  .ambient-toggle {
+    width: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
 @media(max-width:900px) {
   .nav-center {
     display: none;
+  }
+
+  .nav-end {
+    gap: .65rem;
+  }
+
+  .ambient-label {
+    display: none;
+  }
+
+  .ambient-toggle {
+    width: 38px;
+    justify-content: center;
+    padding: 0;
   }
 
   .nav-ham {
@@ -2335,6 +2539,13 @@ footer {
     min-height: 340px;
     max-height: 48vh;
   }
+
+  .auth-shell {
+    width: calc(100% - 2rem);
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding: 2rem 0;
+  }
 }
 
 @media(max-width:600px) {
@@ -2348,6 +2559,11 @@ footer {
 
   .nav-icon {
     display: none;
+  }
+
+  .ambient-toggle {
+    width: 34px;
+    min-height: 34px;
   }
 
   .hero {
@@ -2516,5 +2732,15 @@ footer {
   .product-modal-close {
     top: .7rem;
     right: .7rem;
+  }
+
+  .auth-shell {
+    width: calc(100% - 1rem);
+    padding: 1rem 0;
+  }
+
+  .auth-copy,
+  .auth-card {
+    padding: 1.35rem;
   }
 }
