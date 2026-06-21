@@ -89,5 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="foot-bottom"><span class="foot-copy">© 2025 VYNTRA - Todos los derechos reservados</span><div class="foot-soc"><a href="ropa.html">Tienda</a><a href="temporada.html">Temporada</a></div></div>
 </footer>
 <script src="js/vyntra_noir.js"></script>
+<script src="js/vyntra_i18n.js"></script>
 </body>
 </html>
