@@ -38,17 +38,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $errors[] = 'Ya existe una cuenta con ese email.';
             } else {
-                $insert = $pdo->prepare('INSERT INTO users (name, email, password_hash) VALUES (:name, :email, :password_hash)');
+                $count = (int) $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
+                $insert = $pdo->prepare('INSERT INTO users (name, email, password_hash, is_admin) VALUES (:name, :email, :password_hash, :is_admin)');
                 $insert->execute([
                     'name' => $name,
                     'email' => $email,
                     'password_hash' => password_hash($password, PASSWORD_DEFAULT),
+                    'is_admin' => $count === 0 ? 1 : 0,
                 ]);
 
                 login_user([
                     'id' => (int) $pdo->lastInsertId(),
                     'name' => $name,
                     'email' => $email,
+                    'is_admin' => $count === 0 ? 1 : 0,
                 ]);
                 redirect_to('index.html');
             }

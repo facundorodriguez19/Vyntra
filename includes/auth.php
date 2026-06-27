@@ -28,7 +28,7 @@ function current_user(): ?array
         return null;
     }
 
-    $stmt = db()->prepare('SELECT id, name, email, created_at FROM users WHERE id = :id LIMIT 1');
+    $stmt = db()->prepare('SELECT id, name, email, is_admin, created_at FROM users WHERE id = :id LIMIT 1');
     $stmt->execute(['id' => (int) $_SESSION['user_id']]);
     $user = $stmt->fetch();
 
@@ -69,4 +69,34 @@ function redirect_to(string $path): never
 function e(string $value): string
 {
     return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+function is_admin_user(?array $user = null): bool
+{
+    $user ??= current_user();
+    return !empty($user['is_admin']);
+}
+
+function require_admin(): array
+{
+    $user = current_user();
+
+    if (!$user) {
+        redirect_to('../login.php');
+    }
+
+    if (!is_admin_user($user)) {
+        http_response_code(403);
+        exit('Acceso restringido al administrador.');
+    }
+
+    return $user;
+}
+
+function slugify(string $value): string
+{
+    $value = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value) ?: $value;
+    $value = strtolower($value);
+    $value = preg_replace('/[^a-z0-9]+/', '-', $value) ?? '';
+    return trim($value, '-') ?: 'producto';
 }

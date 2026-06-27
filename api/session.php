@@ -22,5 +22,6 @@ echo json_encode([
         'id' => (int) $user['id'],
         'name' => $user['name'],
         'email' => $user['email'],
+        'isAdmin' => !empty($user['is_admin']),
     ] : null,
 ], JSON_UNESCAPED_UNICODE);

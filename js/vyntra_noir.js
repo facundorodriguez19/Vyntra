@@ -10,6 +10,7 @@ const productModal = document.createElement('div');
 const cartDrawer = document.createElement('div');
 const ORDER_EMAIL = 'facundo.rodriguez.pro@gmail.com';
 const CART_STORAGE_KEY = 'vyntra-cart-v1';
+const FALLBACK_WHATSAPP_URL = 'https://wa.me/5491112345678?text=Hola%20VYNTRA%2C%20quiero%20hacer%20una%20consulta.';
 let cart = [];
 let activeModalProduct = null;
 let lastFocusedElement = null;
@@ -24,7 +25,7 @@ cartDrawer.innerHTML = `
   <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
     <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>×</button>
     <div class="cart-head">
-      <span class="sec-tag">Pedido por email</span>
+      <span class="sec-tag">Pago seguro</span>
       <h2 id="cart-title">Carrito</h2>
       <p>Completá tus datos y se abrirá un email con el pedido listo para enviar. VYNTRA coordina después por WhatsApp.</p>
     </div>
@@ -40,11 +41,14 @@ cartDrawer.innerHTML = `
       <label>Email<input type="email" name="email" placeholder="tu@email.com" required></label>
       <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaración del pedido"></textarea></label>
       <p class="cart-status" role="status" aria-live="polite"></p>
-      <button class="btn-outline-g cart-submit" type="submit">Enviar pedido por email</button>
+      <button class="btn-outline-g cart-submit" type="submit">Pagar con Stripe</button>
     </form>
   </aside>
 `;
 document.body.appendChild(cartDrawer);
+cartDrawer.querySelector('.cart-head p').textContent = 'Completa tus datos y paga con Stripe. Despues vas a poder seguir el estado del pedido desde la web.';
+cartDrawer.querySelector('.cart-empty').textContent = 'Tu carrito esta vacio.';
+cartDrawer.querySelector('.cart-submit').textContent = 'Pagar con Stripe';
 
 productModal.className = 'product-modal';
 productModal.setAttribute('aria-hidden', 'true');
@@ -95,9 +99,9 @@ const updateAuthNavigation = async () => {
 
     const firstName = String(data.user.name || 'Cuenta').trim().split(/\s+/)[0] || 'Cuenta';
     authLoginLinks.forEach((link) => {
-      link.textContent = `Hola, ${firstName}`;
-      link.href = 'logout.php';
-      link.title = 'Cerrar sesión';
+      link.textContent = data.user.isAdmin ? 'Admin' : `Hola, ${firstName}`;
+      link.href = data.user.isAdmin ? 'admin/index.php' : 'mis_pedidos.php';
+      link.title = data.user.isAdmin ? 'Panel administrador' : 'Mis pedidos';
       link.classList.add('is-authenticated');
     });
 
@@ -113,23 +117,87 @@ const updateAuthNavigation = async () => {
 
 updateAuthNavigation();
 
+const trackVisit = () => {
+  const payload = JSON.stringify({
+    path: `${window.location.pathname}${window.location.search}`,
+    title: document.title,
+    referrer: document.referrer
+  });
+
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('api/track_visit.php', new Blob([payload], { type: 'application/json' }));
+      return;
+    }
+
+    fetch('api/track_visit.php', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    }).catch(() => {});
+  } catch {
+    // Puede fallar si se abre como archivo local.
+  }
+};
+
+const createWhatsappButton = async () => {
+  const button = document.createElement('a');
+  button.className = 'whatsapp-float';
+  button.href = FALLBACK_WHATSAPP_URL;
+  button.target = '_blank';
+  button.rel = 'noopener';
+  button.setAttribute('aria-label', 'Consultar por WhatsApp');
+  button.innerHTML = '<span>WhatsApp</span>';
+  document.body.appendChild(button);
+
+  try {
+    const response = await fetch('api/site_config.php', {
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) return;
+    const config = await response.json();
+    if (config.whatsappUrl) button.href = config.whatsappUrl;
+  } catch {
+    // Fallback configurado arriba.
+  }
+};
+
+trackVisit();
+createWhatsappButton();
+
 const createAmbientController = () => {
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!navEnd || !AudioContextClass) return null;
+  if (!navEnd) return null;
 
   const button = document.createElement('button');
   button.className = 'ambient-toggle';
   button.type = 'button';
   button.setAttribute('aria-pressed', 'false');
+  button.title = 'Happy Nation';
   button.innerHTML = '<span class="ambient-dot" aria-hidden="true"></span><span class="ambient-label">Ambiente</span>';
 
   const cartButton = navEnd.querySelector('.nav-cta');
   navEnd.insertBefore(button, cartButton || navEnd.firstChild);
 
   let state = null;
+  const song = new Audio('audio/happy-nation.mp3');
+  song.loop = true;
+  song.preload = 'none';
+  song.volume = 0.62;
 
   const stopAmbient = (quick = false) => {
     if (!state) return;
+
+    if (state.type === 'audio') {
+      song.pause();
+      song.currentTime = 0;
+      state = null;
+      button.classList.remove('is-on');
+      button.setAttribute('aria-pressed', 'false');
+      return;
+    }
 
     const { context, master, nodes } = state;
     const now = context.currentTime;
@@ -152,12 +220,10 @@ const createAmbientController = () => {
     button.setAttribute('aria-pressed', 'false');
   };
 
-  const startAmbient = async () => {
-    if (state) {
-      stopAmbient();
-      return;
+  const startFallbackPad = async () => {
+    if (!AudioContextClass) {
+      throw new Error('Audio no disponible en este navegador.');
     }
-
     const context = new AudioContextClass();
     const master = context.createGain();
     const filter = context.createBiquadFilter();
@@ -203,9 +269,25 @@ const createAmbientController = () => {
       nodes.push(oscillator, lfo);
     });
 
-    state = { context, master, nodes };
+    state = { type: 'synth', context, master, nodes };
     await context.resume();
     master.gain.setTargetAtTime(0.62, context.currentTime, 0.55);
+  };
+
+  const startAmbient = async () => {
+    if (state) {
+      stopAmbient();
+      return;
+    }
+
+    try {
+      song.currentTime = 0;
+      await song.play();
+      state = { type: 'audio' };
+    } catch {
+      await startFallbackPad();
+    }
+
     button.classList.add('is-on');
     button.setAttribute('aria-pressed', 'true');
   };
@@ -470,6 +552,26 @@ const buildOrderEmail = (customer) => {
 
   lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envío o retiro.');
   return lines.join('\n');
+};
+
+const startStripeCheckout = async (customer) => {
+  const response = await fetch('api/checkout.php', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      customer,
+      items: cart,
+      total: cartTotal()
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data.ok || !data.checkoutUrl) {
+    throw new Error(data.error || 'No se pudo iniciar el pago.');
+  }
+
+  return data.checkoutUrl;
 };
 
 cart = loadCart();
@@ -737,7 +839,7 @@ cartDrawer.addEventListener('click', (event) => {
   if (event.target.closest('[data-cart-remove]')) removeCartItem(id);
 });
 
-cartForm?.addEventListener('submit', (event) => {
+cartForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   if (!cart.length) {
@@ -760,11 +862,13 @@ cartForm?.addEventListener('submit', (event) => {
     return;
   }
 
-  const subject = `Pedido VYNTRA - ${customer.name}`;
-  const body = buildOrderEmail(customer);
-  const emailUrl = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  setCartStatus(`Se abrió el email dirigido a ${ORDER_EMAIL}.`, 'ok');
-  window.location.href = emailUrl;
+  try {
+    setCartStatus('Preparando pago seguro con Stripe...', 'ok');
+    const checkoutUrl = await startStripeCheckout(customer);
+    window.location.href = checkoutUrl;
+  } catch (error) {
+    setCartStatus(error.message || 'No se pudo iniciar el pago. Revisá la configuración de Stripe.', 'error');
+  }
 });
 
 document.querySelectorAll('.contact-form').forEach((form) => {

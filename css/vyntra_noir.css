@@ -2243,6 +2243,445 @@ nav {
   margin-top: .35rem;
 }
 
+/* WHATSAPP */
+.whatsapp-float {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 620;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #25d366;
+  color: #06120a;
+  text-decoration: none;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+  border: 1px solid rgba(255, 255, 255, .28);
+  transition: transform .24s ease, filter .24s ease;
+}
+
+.whatsapp-float::before {
+  content: 'WA';
+  font-weight: 900;
+  font-size: .8rem;
+  letter-spacing: .04em;
+}
+
+.whatsapp-float span {
+  position: absolute;
+  right: calc(100% + .7rem);
+  white-space: nowrap;
+  background: var(--b2);
+  color: var(--g);
+  border: 1px solid var(--g3);
+  padding: .55rem .75rem;
+  font-size: .55rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateX(8px);
+  pointer-events: none;
+  transition: opacity .24s ease, transform .24s ease;
+}
+
+.whatsapp-float:hover {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+}
+
+.whatsapp-float:hover span {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ADMIN */
+.admin-body {
+  min-height: 100vh;
+  background: var(--b);
+  display: grid;
+  grid-template-columns: 250px 1fr;
+}
+
+.admin-sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  background: var(--b2);
+  border-right: 1px solid var(--g3);
+  padding: 1.2rem;
+}
+
+.admin-logo {
+  display: block;
+  color: var(--g);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.8rem;
+  text-decoration: none;
+  margin-bottom: 2rem;
+}
+
+.admin-sidebar nav {
+  display: grid;
+  gap: .55rem;
+}
+
+.admin-sidebar a {
+  color: var(--w2);
+  text-decoration: none;
+  border: 1px solid transparent;
+  padding: .85rem .9rem;
+  font-size: .66rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin-sidebar a:hover {
+  color: var(--g);
+  border-color: var(--g3);
+  background: var(--g4);
+}
+
+.admin-main {
+  width: min(100%, 1280px);
+  padding: clamp(1rem, 3vw, 2rem);
+}
+
+.admin-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-head h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--w);
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1;
+}
+
+.admin-head p,
+.admin-muted {
+  color: var(--d3);
+  font-size: .78rem;
+  line-height: 1.7;
+}
+
+.admin-actions {
+  display: flex;
+  gap: .7rem;
+  flex-wrap: wrap;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--b4);
+  margin-bottom: 1.5rem;
+}
+
+.admin-stats article,
+.admin-card,
+.admin-form {
+  background: var(--b2);
+  border: 1px solid var(--g3);
+}
+
+.admin-stats article {
+  padding: 1.2rem;
+}
+
+.admin-stats span,
+.admin-card h2 {
+  color: var(--g);
+  font-size: .58rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.admin-stats strong {
+  display: block;
+  color: var(--w);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2rem;
+  margin-top: .35rem;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-card {
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.admin-card h2 {
+  margin-bottom: 1rem;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.admin-table th,
+.admin-table td {
+  border-bottom: 1px solid var(--g3);
+  padding: .8rem .7rem;
+  text-align: left;
+  color: var(--w2);
+  font-size: .72rem;
+  vertical-align: middle;
+}
+
+.admin-table th {
+  color: var(--g);
+  font-size: .52rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.admin-table small {
+  display: block;
+  color: var(--d3);
+  margin-top: .22rem;
+}
+
+.admin-table a,
+.admin-row-actions a {
+  color: var(--g);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.admin-product-cell {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.admin-product-cell img {
+  width: 48px;
+  height: 62px;
+  object-fit: cover;
+  background: var(--b);
+}
+
+.admin-row-actions {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.admin-link-danger,
+.admin-danger {
+  border: 1px solid rgba(191, 160, 106, .35);
+  background: rgba(191, 160, 106, .08);
+  color: var(--g);
+  font: inherit;
+  font-size: .6rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: .55rem .7rem;
+}
+
+.admin-table-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-notice {
+  border: 1px solid var(--g3);
+  background: var(--g4);
+  color: var(--g);
+  padding: .85rem 1rem;
+  margin-bottom: 1rem;
+  font-size: .75rem;
+}
+
+.admin-form {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1rem, 3vw, 1.6rem);
+  max-width: 860px;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.admin-form label {
+  display: grid;
+  gap: .45rem;
+  color: var(--g);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  width: 100%;
+  border: 1px solid var(--g3);
+  background: var(--b);
+  color: var(--w);
+  padding: .85rem .95rem;
+  font: inherit;
+  font-size: .82rem;
+}
+
+.admin-bars {
+  display: grid;
+  gap: .65rem;
+}
+
+.admin-bar-row {
+  display: grid;
+  grid-template-columns: 56px 1fr 36px;
+  gap: .7rem;
+  align-items: center;
+  color: var(--w2);
+  font-size: .72rem;
+}
+
+.admin-bar-row div {
+  height: 8px;
+  background: var(--b4);
+  overflow: hidden;
+}
+
+.admin-bar-row i {
+  display: block;
+  height: 100%;
+  background: var(--g);
+}
+
+.admin-status-form {
+  display: grid;
+  gap: .8rem;
+  margin-bottom: 1rem;
+}
+
+.admin-status-form label {
+  display: grid;
+  gap: .45rem;
+  color: var(--g);
+  font-size: .58rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.admin-status-form select {
+  border: 1px solid var(--g3);
+  background: var(--b);
+  color: var(--w);
+  padding: .85rem .95rem;
+  font: inherit;
+}
+
+.order-page {
+  padding-top: clamp(2rem, 5vw, 4rem);
+  display: grid;
+  gap: 1rem;
+}
+
+.order-card {
+  background: var(--b2);
+  border: 1px solid var(--g3);
+  padding: clamp(1.4rem, 3vw, 2.2rem);
+}
+
+.order-card h1,
+.order-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--w);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.order-card h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  margin-bottom: 1rem;
+}
+
+.order-card h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.order-card p {
+  color: var(--w2);
+  line-height: 1.8;
+}
+
+.order-tracker {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--b4);
+  margin: 1.5rem 0;
+}
+
+.order-step {
+  background: var(--b3);
+  padding: 1rem;
+  min-height: 110px;
+  display: grid;
+  align-content: center;
+  gap: .55rem;
+  color: var(--d3);
+}
+
+.order-step span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--g3);
+  border-radius: 50%;
+  font-size: .7rem;
+  font-weight: 900;
+}
+
+.order-step strong {
+  color: var(--w2);
+  font-size: .7rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.order-step.is-done {
+  background: var(--g4);
+}
+
+.order-step.is-done span {
+  background: var(--g);
+  color: var(--b);
+}
+
+.order-step.is-done strong {
+  color: var(--g);
+}
+
 /* FOOTER */
 footer {
   background: var(--b);
@@ -2409,6 +2848,30 @@ footer {
 }
 
 @media(max-width:900px) {
+  .admin-body {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    position: static;
+    height: auto;
+  }
+
+  .admin-sidebar nav {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .admin-stats,
+  .admin-grid,
+  .order-tracker {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .nav-center {
     display: none;
   }
@@ -2549,6 +3012,29 @@ footer {
 }
 
 @media(max-width:600px) {
+  .admin-sidebar nav,
+  .admin-stats,
+  .admin-grid,
+  .admin-form-grid,
+  .order-tracker {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-main {
+    padding: 1rem;
+  }
+
+  .whatsapp-float {
+    right: .9rem;
+    bottom: .9rem;
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp-float span {
+    display: none;
+  }
+
   nav {
     padding: 0 1rem;
   }

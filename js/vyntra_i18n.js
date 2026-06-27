@@ -630,8 +630,14 @@
     switcher.className = `language-switcher language-switcher-${context}`;
     switcher.setAttribute('role', 'group');
     switcher.setAttribute('aria-label', dictionary(currentLanguage).Idioma || 'Idioma');
+    const flagMeta = {
+      es: { className: 'flag-es', short: 'ES' },
+      pt: { className: 'flag-br', short: 'BR' },
+      en: { className: 'flag-us', short: 'US' }
+    };
 
     Object.entries(LANGUAGES).forEach(([code, config]) => {
+      const flag = flagMeta[code] || { className: 'flag-generic', short: code.toUpperCase() };
       const button = document.createElement('button');
       button.className = 'lang-button';
       button.type = 'button';
@@ -639,7 +645,7 @@
       button.title = config.label;
       button.setAttribute('aria-label', config.label);
       button.setAttribute('aria-pressed', 'false');
-      button.innerHTML = `<span aria-hidden="true">${config.flag}</span><span class="lang-text">${config.label}</span>`;
+      button.innerHTML = `<span class="lang-flag ${flag.className}" aria-hidden="true"><span>${flag.short}</span></span><span class="lang-text">${config.label}</span>`;
       button.addEventListener('click', () => applyLanguage(code));
       switcher.appendChild(button);
     });
@@ -679,8 +685,69 @@
         transform: translateY(-1px);
       }
 
-      .lang-button span[aria-hidden="true"] {
-        font-size: 1rem;
+      .lang-flag {
+        width: 21px;
+        height: 15px;
+        position: relative;
+        display: block;
+        overflow: hidden;
+        border: 1px solid rgba(240, 237, 230, .55);
+        box-shadow: 0 0 0 1px rgba(0, 0, 0, .22);
+      }
+
+      .lang-flag span {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        color: transparent;
+        font-size: 0;
+      }
+
+      .flag-es {
+        background: linear-gradient(#c60b1e 0 25%, #ffc400 25% 75%, #c60b1e 75%);
+      }
+
+      .flag-br {
+        background: #009b3a;
+      }
+
+      .flag-br::before {
+        content: '';
+        position: absolute;
+        inset: 3px 4px;
+        background: #ffdf00;
+        transform: rotate(45deg);
+      }
+
+      .flag-br::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #002776;
+        transform: translate(-50%, -50%);
+      }
+
+      .flag-us {
+        background: repeating-linear-gradient(to bottom, #b22234 0 1.15px, #fff 1.15px 2.3px);
+      }
+
+      .flag-us::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 9px;
+        height: 8px;
+        background: #3c3b6e;
+      }
+
+      .flag-generic {
+        background: var(--g, #BFA06A);
       }
 
       .lang-text {
