@@ -43,18 +43,18 @@ if ($currentIndex === false) $currentIndex = 0;
 <nav>
   <a class="logo-wrap" href="index.html" aria-label="Inicio VYNTRA"><img class="logo-img" src="images/logoprincipaltexto.png" alt="VYNTRA"></a>
   <ul class="nav-center"><li><a href="ropa.html">Ropa</a></li><li><a href="accesorios.html">Accesorios</a></li><li><a href="kits.html">Kits</a></li><li><a href="temporada.html">Temporada</a></li><li><a href="contacto.html">Contacto</a></li></ul>
-  <div class="nav-end"><a class="nav-icon" href="mis_pedidos.php">Mis pedidos</a><button class="nav-cta" type="button">Carrito <span class="cart-count">0</span></button><button class="nav-ham" type="button" aria-label="Abrir menu" aria-controls="menu-mobile" aria-expanded="false">☰</button></div>
+  <div class="nav-end"><a class="nav-icon" href="mis_pedidos.php">Mis pedidos</a><button class="nav-cta" type="button">Carrito <span class="cart-count">0</span></button><button class="nav-ham" type="button" aria-label="Abrir menu" aria-controls="menu-mobile" aria-expanded="false">â˜°</button></div>
 </nav>
 <div class="mob" id="menu-mobile"><a href="ropa.html">Ropa</a><a href="accesorios.html">Accesorios</a><a href="kits.html">Kits</a><a href="temporada.html">Temporada</a><a href="contacto.html">Contacto</a><a href="mis_pedidos.php">Mis pedidos</a></div>
 
 <main class="page-shell order-page">
   <?php if (!$order): ?>
-    <section class="order-card"><span class="sec-tag">Pedido</span><h1>No encontramos ese pedido</h1><p>Si acabas de pagar, espera unos segundos y actualiza. Stripe puede tardar un momento en confirmar el pago.</p></section>
+    <section class="order-card"><span class="sec-tag">Pedido</span><h1>No encontramos ese pedido</h1><p>Si acabas de pagar, espera unos segundos y actualiza. La confirmacion del pago puede tardar un momento.</p></section>
   <?php else: ?>
     <section class="order-card">
       <span class="sec-tag">Pedido #<?= (int) $order['id'] ?></span>
       <h1>Seguimiento del pedido</h1>
-      <p>Pago: <strong><?= e($order['payment_status']) ?></strong> · Total: <strong>$<?= number_format((float) $order['total'], 0, ',', '.') ?></strong></p>
+      <p>Pago: <strong><?= e($order['payment_status']) ?></strong> Â· Total: <strong>$<?= number_format((float) $order['total'], 0, ',', '.') ?></strong></p>
       <div class="order-tracker">
         <?php $i = 0; foreach ($steps as $key => $label): ?>
           <div class="order-step <?= $i <= $currentIndex ? 'is-done' : '' ?>">

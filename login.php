@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = (string) ($_POST['password'] ?? '');
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errors[] = 'Ingresá un email válido.';
+        $errors[] = 'IngresÃ¡ un email vÃ¡lido.';
     }
 
     if ($password === '') {
-        $errors[] = 'Ingresá tu contraseña.';
+        $errors[] = 'IngresÃ¡ tu contraseÃ±a.';
     }
 
     if (!$errors) {
@@ -25,13 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch();
 
             if (!$user || !password_verify($password, $user['password_hash'])) {
-                $errors[] = 'El email o la contraseña no son correctos.';
+                $errors[] = 'El email o la contraseÃ±a no son correctos.';
             } else {
                 login_user($user);
                 redirect_to('index.html');
             }
         } catch (Throwable $error) {
-            $errors[] = 'No se pudo conectar con la base de datos. Importá database/schema.sql en MySQL y revisá config/database.php.';
+            $errors[] = 'No se pudo conectar con la base de datos. ImportÃ¡ database/schema.sql en MySQL y revisÃ¡ config/database.php.';
         }
     }
 }
@@ -49,16 +49,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <nav>
   <a class="logo-wrap" href="index.html" aria-label="Inicio VYNTRA"><img class="logo-img" src="images/logoprincipaltexto.png" alt="VYNTRA"></a>
   <ul class="nav-center"><li><a href="ropa.html">Ropa</a></li><li><a href="accesorios.html">Accesorios</a></li><li><a href="kits.html">Kits</a></li><li><a href="temporada.html">Temporada</a></li><li><a href="contacto.html">Contacto</a></li></ul>
-  <div class="nav-end"><a class="nav-icon" href="temporada.html#lookbook">Lookbook</a><a class="nav-icon nav-auth-link active" href="login.php" data-auth-login>Ingresar</a><a class="nav-icon nav-auth-link" href="register.php" data-auth-register>Registro</a><button class="nav-cta" type="button">Carrito <span class="cart-count">0</span></button><button class="nav-ham" type="button" aria-label="Abrir menu" aria-controls="menu-mobile" aria-expanded="false">☰</button></div>
+  <div class="nav-end"><a class="nav-login-button nav-auth-link" href="login.php" data-auth-login>Login</a><button class="nav-cta" type="button">Carrito <span class="cart-count">0</span></button><button class="nav-ham" type="button" aria-label="Abrir menu" aria-controls="menu-mobile" aria-expanded="false">â˜°</button></div>
 </nav>
-<div class="mob" id="menu-mobile"><a href="ropa.html">Ropa</a><a href="accesorios.html">Accesorios</a><a href="kits.html">Kits</a><a href="temporada.html">Temporada</a><a href="contacto.html">Contacto</a><a href="login.php" data-auth-login>Ingresar</a><a href="register.php" data-auth-register>Registro</a></div>
+<div class="mob" id="menu-mobile"><a href="ropa.html">Ropa</a><a href="accesorios.html">Accesorios</a><a href="kits.html">Kits</a><a href="temporada.html">Temporada</a><a href="contacto.html">Contacto</a><a href="login.php" data-auth-login>Login</a></div>
 
 <main>
   <section class="auth-shell">
     <div class="auth-copy">
       <span class="sec-tag">Acceso VYNTRA</span>
-      <h1>Ingresá a tu cuenta</h1>
-      <p>Usá tu cuenta para identificar pedidos, guardar datos de contacto y preparar el sitio para próximas funciones conectadas a la base de datos.</p>
+      <h1>IngresÃ¡ a tu cuenta</h1>
+      <p>UsÃ¡ tu cuenta para identificar pedidos, guardar datos de contacto y preparar el sitio para prÃ³ximas funciones conectadas a la base de datos.</p>
     </div>
 
     <form class="auth-card" method="post" action="login.php" novalidate>
@@ -74,19 +74,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <?php endif; ?>
 
       <label>Email<input type="email" name="email" value="<?= e($email) ?>" placeholder="tu@email.com" required></label>
-      <label>Contraseña<input type="password" name="password" placeholder="Tu contraseña" required></label>
+      <label>ContraseÃ±a<input type="password" name="password" placeholder="Tu contraseÃ±a" required></label>
       <button class="btn-outline-g" type="submit">Ingresar</button>
-      <p class="auth-switch">¿Todavía no tenés cuenta? <a href="register.php">Crear cuenta</a></p>
+      <p class="auth-switch">Â¿TodavÃ­a no tenÃ©s cuenta? <a href="register.php">Crear cuenta</a></p>
     </form>
   </section>
 </main>
 
 <footer>
   <div class="foot-main">
-    <div class="foot-brand"><span class="foot-brand-logo"><img src="images/logoprincipaltexto.png" alt="VYNTRA"></span><p class="foot-desc">Prendas y accesorios de autor para construir identidad con intención.</p></div>
-    <nav class="foot-nav" aria-label="Secciones del sitio"><a href="index.html#sobre">Marca</a><a href="index.html#lookbook">Lookbook</a><a href="index.html#proceso">Proceso</a><a href="index.html#envios">Envíos</a><a href="index.html#contacto">Contacto</a></nav>
+    <div class="foot-brand"><span class="foot-brand-logo"><img src="images/logoprincipaltexto.png" alt="VYNTRA"></span><p class="foot-desc">Prendas y accesorios de autor para construir identidad con intenciÃ³n.</p></div>
+    <nav class="foot-nav" aria-label="Secciones del sitio"><a href="index.html#sobre">Marca</a><a href="index.html#proceso">Proceso</a><a href="index.html#envios">EnvÃ­os</a><a href="index.html#contacto">Contacto</a></nav>
   </div>
-  <div class="foot-bottom"><span class="foot-copy">© 2025 VYNTRA - Todos los derechos reservados</span><div class="foot-soc"><a href="ropa.html">Tienda</a><a href="temporada.html">Temporada</a></div></div>
+  <div class="foot-bottom"><span class="foot-copy">Â© 2025 VYNTRA - Todos los derechos reservados</span><div class="foot-soc"><a href="ropa.html">Tienda</a><a href="temporada.html">Temporada</a></div></div>
 </footer>
 <script src="js/vyntra_noir.js"></script>
 <script src="js/vyntra_i18n.js"></script>

@@ -11,6 +11,7 @@ const cartDrawer = document.createElement('div');
 const ORDER_EMAIL = 'facundo.rodriguez.pro@gmail.com';
 const CART_STORAGE_KEY = 'vyntra-cart-v1';
 const FALLBACK_WHATSAPP_URL = 'https://wa.me/5491112345678?text=Hola%20VYNTRA%2C%20quiero%20hacer%20una%20consulta.';
+const HAPPY_NATION_VIDEO_ID = '6vNnB4oLZNo';
 let cart = [];
 let activeModalProduct = null;
 let lastFocusedElement = null;
@@ -23,14 +24,14 @@ cartDrawer.setAttribute('aria-hidden', 'true');
 cartDrawer.innerHTML = `
   <div class="cart-backdrop" data-cart-close></div>
   <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-    <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>×</button>
+    <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>Ã—</button>
     <div class="cart-head">
-      <span class="sec-tag">Pago seguro</span>
+      <span class="sec-tag">Checkout</span>
       <h2 id="cart-title">Carrito</h2>
-      <p>Completá tus datos y se abrirá un email con el pedido listo para enviar. VYNTRA coordina después por WhatsApp.</p>
+      <p>Revisa tu seleccion, completa tus datos y finaliza el pedido con pago seguro.</p>
     </div>
     <div class="cart-items"></div>
-    <p class="cart-empty">Tu carrito está vacío.</p>
+    <p class="cart-empty">Tu carrito estÃ¡ vacÃ­o.</p>
     <div class="cart-summary">
       <span>Total</span>
       <strong class="cart-total">$0</strong>
@@ -39,23 +40,24 @@ cartDrawer.innerHTML = `
       <label>Nombre<input type="text" name="name" placeholder="Tu nombre" required></label>
       <label>WhatsApp<input type="tel" name="whatsapp" placeholder="+54 9 11 1234 5678" required></label>
       <label>Email<input type="email" name="email" placeholder="tu@email.com" required></label>
-      <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaración del pedido"></textarea></label>
+      <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaraciÃ³n del pedido"></textarea></label>
+      <div class="cart-pay-note"><span>Pago seguro</span><strong>Tarjeta / checkout online</strong></div>
       <p class="cart-status" role="status" aria-live="polite"></p>
-      <button class="btn-outline-g cart-submit" type="submit">Pagar con Stripe</button>
+      <button class="btn-outline-g cart-submit" type="submit">Pagar</button>
     </form>
   </aside>
 `;
 document.body.appendChild(cartDrawer);
-cartDrawer.querySelector('.cart-head p').textContent = 'Completa tus datos y paga con Stripe. Despues vas a poder seguir el estado del pedido desde la web.';
+cartDrawer.querySelector('.cart-head p').textContent = 'Revisa tu seleccion, completa tus datos y finaliza el pedido con pago seguro.';
 cartDrawer.querySelector('.cart-empty').textContent = 'Tu carrito esta vacio.';
-cartDrawer.querySelector('.cart-submit').textContent = 'Pagar con Stripe';
+cartDrawer.querySelector('.cart-submit').textContent = 'Pagar';
 
 productModal.className = 'product-modal';
 productModal.setAttribute('aria-hidden', 'true');
 productModal.innerHTML = `
   <div class="product-modal-backdrop" data-modal-close></div>
   <div class="product-modal-panel" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
-    <button class="product-modal-close" type="button" aria-label="Cerrar detalle" data-modal-close>×</button>
+    <button class="product-modal-close" type="button" aria-label="Cerrar detalle" data-modal-close>Ã—</button>
     <div class="product-modal-image"><img alt=""></div>
     <div class="product-modal-body">
       <span class="product-modal-kicker"></span>
@@ -168,132 +170,62 @@ trackVisit();
 createWhatsappButton();
 
 const createAmbientController = () => {
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!navEnd) return null;
 
   const button = document.createElement('button');
   button.className = 'ambient-toggle';
   button.type = 'button';
   button.setAttribute('aria-pressed', 'false');
-  button.title = 'Happy Nation';
+  button.title = 'Happy Nation - Ace of Base';
   button.innerHTML = '<span class="ambient-dot" aria-hidden="true"></span><span class="ambient-label">Ambiente</span>';
 
   const cartButton = navEnd.querySelector('.nav-cta');
   navEnd.insertBefore(button, cartButton || navEnd.firstChild);
 
-  let state = null;
-  const song = new Audio('audio/happy-nation.mp3');
-  song.loop = true;
-  song.preload = 'none';
-  song.volume = 0.62;
+  const player = document.createElement('div');
+  player.className = 'ambient-player';
+  player.setAttribute('aria-hidden', 'true');
+  player.innerHTML = `
+    <div class="ambient-player-head">
+      <span>Happy Nation</span>
+      <button type="button" aria-label="Cerrar musica" data-ambient-close>&times;</button>
+    </div>
+    <div class="ambient-frame"></div>
+  `;
+  document.body.appendChild(player);
 
-  const stopAmbient = (quick = false) => {
-    if (!state) return;
+  const frameWrap = player.querySelector('.ambient-frame');
+  const closeButton = player.querySelector('[data-ambient-close]');
+  let isOpen = false;
 
-    if (state.type === 'audio') {
-      song.pause();
-      song.currentTime = 0;
-      state = null;
-      button.classList.remove('is-on');
-      button.setAttribute('aria-pressed', 'false');
-      return;
-    }
-
-    const { context, master, nodes } = state;
-    const now = context.currentTime;
-    master.gain.cancelScheduledValues(now);
-    master.gain.setTargetAtTime(0, now, quick ? 0.02 : 0.32);
-
-    window.setTimeout(() => {
-      nodes.forEach((node) => {
-        try {
-          node.stop();
-        } catch {
-          // Osciladores ya detenidos.
-        }
-      });
-      context.close?.();
-    }, quick ? 80 : 950);
-
-    state = null;
+  const stopAmbient = () => {
+    if (!isOpen) return;
+    frameWrap.innerHTML = '';
+    isOpen = false;
+    player.classList.remove('is-open');
+    player.setAttribute('aria-hidden', 'true');
     button.classList.remove('is-on');
     button.setAttribute('aria-pressed', 'false');
   };
 
-  const startFallbackPad = async () => {
-    if (!AudioContextClass) {
-      throw new Error('Audio no disponible en este navegador.');
-    }
-    const context = new AudioContextClass();
-    const master = context.createGain();
-    const filter = context.createBiquadFilter();
-    const delay = context.createDelay(3);
-    const feedback = context.createGain();
-    const wet = context.createGain();
-    const dry = context.createGain();
-    const nodes = [];
-
-    master.gain.value = 0;
-    filter.type = 'lowpass';
-    filter.frequency.value = 820;
-    filter.Q.value = 0.42;
-    delay.delayTime.value = 1.8;
-    feedback.gain.value = 0.18;
-    wet.gain.value = 0.22;
-    dry.gain.value = 0.9;
-
-    filter.connect(dry).connect(master);
-    filter.connect(delay);
-    delay.connect(feedback).connect(delay);
-    delay.connect(wet).connect(master);
-    master.connect(context.destination);
-
-    const chord = [130.81, 196.0, 246.94, 329.63];
-    chord.forEach((frequency, index) => {
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      const lfo = context.createOscillator();
-      const lfoDepth = context.createGain();
-
-      oscillator.type = index % 2 === 0 ? 'sine' : 'triangle';
-      oscillator.frequency.value = frequency;
-      oscillator.detune.value = (index - 1.5) * 4;
-      gain.gain.value = 0.022 + index * 0.003;
-      lfo.frequency.value = 0.035 + index * 0.012;
-      lfoDepth.gain.value = 0.006;
-
-      lfo.connect(lfoDepth).connect(gain.gain);
-      oscillator.connect(gain).connect(filter);
-      oscillator.start();
-      lfo.start();
-      nodes.push(oscillator, lfo);
-    });
-
-    state = { type: 'synth', context, master, nodes };
-    await context.resume();
-    master.gain.setTargetAtTime(0.62, context.currentTime, 0.55);
-  };
-
-  const startAmbient = async () => {
-    if (state) {
+  const startAmbient = () => {
+    if (isOpen) {
       stopAmbient();
       return;
     }
 
-    try {
-      song.currentTime = 0;
-      await song.play();
-      state = { type: 'audio' };
-    } catch {
-      await startFallbackPad();
-    }
-
+    const src = `https://www.youtube.com/embed/${HAPPY_NATION_VIDEO_ID}?autoplay=1&loop=1&playlist=${HAPPY_NATION_VIDEO_ID}&rel=0`;
+    frameWrap.innerHTML = `<iframe title="Happy Nation - Ace of Base" src="${src}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    isOpen = true;
+    player.classList.add('is-open');
+    player.setAttribute('aria-hidden', 'false');
     button.classList.add('is-on');
     button.setAttribute('aria-pressed', 'true');
   };
 
   button.addEventListener('click', startAmbient);
-  window.addEventListener('pagehide', () => stopAmbient(true));
+  closeButton?.addEventListener('click', stopAmbient);
+  window.addEventListener('pagehide', stopAmbient);
   return button;
 };
 
@@ -495,7 +427,7 @@ const addToCart = (product, options = {}) => {
 
   saveCart();
   renderCart();
-  setCartStatus(`${cartProduct.title} se agregó al pedido.`, 'ok');
+  setCartStatus(`${cartProduct.title} se agregÃ³ al pedido.`, 'ok');
   if (options.openCart) openCartDrawer();
 };
 
@@ -550,7 +482,7 @@ const buildOrderEmail = (customer) => {
     if (item.description) lines.push(`  ${item.description}`);
   });
 
-  lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envío o retiro.');
+  lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envÃ­o o retiro.');
   return lines.join('\n');
 };
 
@@ -585,7 +517,7 @@ const getColorImages = (enhancement, colorName) => {
 
 const getProductData = (card, image) => {
   const title = card.querySelector('.catalog-body h3, .prod-name, .kit-name, .feature-panel h2, .feature-panel h3, .ed-h2')?.textContent?.trim() || image.alt || 'Producto VYNTRA';
-  const description = card.querySelector('.catalog-body p, .prod-desc, .kit-items, .feature-panel p, .ed-body')?.textContent?.trim() || 'Pieza seleccionada de la colección VYNTRA.';
+  const description = card.querySelector('.catalog-body p, .prod-desc, .kit-items, .feature-panel p, .ed-body')?.textContent?.trim() || 'Pieza seleccionada de la colecciÃ³n VYNTRA.';
   const price = card.querySelector('.catalog-bottom span, .prod-price, .kit-price, .feature-price, .ed-price')?.textContent?.trim() || '';
   const kicker = card.querySelector('.catalog-kicker, .prod-tag, .kit-season, .sec-tag, .ed-overline')?.textContent?.trim() || 'Detalle de producto';
   const enhancement = getEnhancement(title);
@@ -844,7 +776,7 @@ cartForm?.addEventListener('submit', async (event) => {
 
   if (!cart.length) {
     cartEmptyEl.hidden = false;
-    setCartStatus('Agregá al menos un producto antes de enviar el pedido.', 'error');
+    setCartStatus('AgregÃ¡ al menos un producto antes de enviar el pedido.', 'error');
     return;
   }
 
@@ -857,17 +789,17 @@ cartForm?.addEventListener('submit', async (event) => {
   };
 
   if (!customer.name || !customer.whatsapp || !customer.email) {
-    setCartStatus('Completá nombre, WhatsApp y email para enviar el pedido.', 'error');
+    setCartStatus('CompletÃ¡ nombre, WhatsApp y email para enviar el pedido.', 'error');
     cartForm.reportValidity();
     return;
   }
 
   try {
-    setCartStatus('Preparando pago seguro con Stripe...', 'ok');
+    setCartStatus('Preparando pago seguro...', 'ok');
     const checkoutUrl = await startStripeCheckout(customer);
     window.location.href = checkoutUrl;
   } catch (error) {
-    setCartStatus(error.message || 'No se pudo iniciar el pago. Revisá la configuración de Stripe.', 'error');
+    setCartStatus(error.message || 'No se pudo iniciar el pago. Revisa la configuracion de pago.', 'error');
   }
 });
 
