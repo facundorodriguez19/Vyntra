@@ -24,14 +24,14 @@ cartDrawer.setAttribute('aria-hidden', 'true');
 cartDrawer.innerHTML = `
   <div class="cart-backdrop" data-cart-close></div>
   <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
-    <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>Ã—</button>
+    <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>×</button>
     <div class="cart-head">
       <span class="sec-tag">Checkout</span>
       <h2 id="cart-title">Carrito</h2>
       <p>Revisa tu seleccion, completa tus datos y finaliza el pedido con pago seguro.</p>
     </div>
     <div class="cart-items"></div>
-    <p class="cart-empty">Tu carrito estÃ¡ vacÃ­o.</p>
+    <p class="cart-empty">Tu carrito está vacío.</p>
     <div class="cart-summary">
       <span>Total</span>
       <strong class="cart-total">$0</strong>
@@ -40,7 +40,7 @@ cartDrawer.innerHTML = `
       <label>Nombre<input type="text" name="name" placeholder="Tu nombre" required></label>
       <label>WhatsApp<input type="tel" name="whatsapp" placeholder="+54 9 11 1234 5678" required></label>
       <label>Email<input type="email" name="email" placeholder="tu@email.com" required></label>
-      <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaraciÃ³n del pedido"></textarea></label>
+      <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaración del pedido"></textarea></label>
       <div class="cart-pay-note"><span>Pago seguro</span><strong>Tarjeta / checkout online</strong></div>
       <p class="cart-status" role="status" aria-live="polite"></p>
       <button class="btn-outline-g cart-submit" type="submit">Pagar</button>
@@ -57,7 +57,7 @@ productModal.setAttribute('aria-hidden', 'true');
 productModal.innerHTML = `
   <div class="product-modal-backdrop" data-modal-close></div>
   <div class="product-modal-panel" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
-    <button class="product-modal-close" type="button" aria-label="Cerrar detalle" data-modal-close>Ã—</button>
+    <button class="product-modal-close" type="button" aria-label="Cerrar detalle" data-modal-close>×</button>
     <div class="product-modal-image"><img alt=""></div>
     <div class="product-modal-body">
       <span class="product-modal-kicker"></span>
@@ -427,7 +427,7 @@ const addToCart = (product, options = {}) => {
 
   saveCart();
   renderCart();
-  setCartStatus(`${cartProduct.title} se agregÃ³ al pedido.`, 'ok');
+  setCartStatus(`${cartProduct.title} se agregó al pedido.`, 'ok');
   if (options.openCart) openCartDrawer();
 };
 
@@ -482,7 +482,7 @@ const buildOrderEmail = (customer) => {
     if (item.description) lines.push(`  ${item.description}`);
   });
 
-  lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envÃ­o o retiro.');
+  lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envío o retiro.');
   return lines.join('\n');
 };
 
@@ -517,7 +517,7 @@ const getColorImages = (enhancement, colorName) => {
 
 const getProductData = (card, image) => {
   const title = card.querySelector('.catalog-body h3, .prod-name, .kit-name, .feature-panel h2, .feature-panel h3, .ed-h2')?.textContent?.trim() || image.alt || 'Producto VYNTRA';
-  const description = card.querySelector('.catalog-body p, .prod-desc, .kit-items, .feature-panel p, .ed-body')?.textContent?.trim() || 'Pieza seleccionada de la colecciÃ³n VYNTRA.';
+  const description = card.querySelector('.catalog-body p, .prod-desc, .kit-items, .feature-panel p, .ed-body')?.textContent?.trim() || 'Pieza seleccionada de la colección VYNTRA.';
   const price = card.querySelector('.catalog-bottom span, .prod-price, .kit-price, .feature-price, .ed-price')?.textContent?.trim() || '';
   const kicker = card.querySelector('.catalog-kicker, .prod-tag, .kit-season, .sec-tag, .ed-overline')?.textContent?.trim() || 'Detalle de producto';
   const enhancement = getEnhancement(title);
@@ -776,7 +776,7 @@ cartForm?.addEventListener('submit', async (event) => {
 
   if (!cart.length) {
     cartEmptyEl.hidden = false;
-    setCartStatus('AgregÃ¡ al menos un producto antes de enviar el pedido.', 'error');
+    setCartStatus('Agregá al menos un producto antes de enviar el pedido.', 'error');
     return;
   }
 
@@ -789,7 +789,7 @@ cartForm?.addEventListener('submit', async (event) => {
   };
 
   if (!customer.name || !customer.whatsapp || !customer.email) {
-    setCartStatus('CompletÃ¡ nombre, WhatsApp y email para enviar el pedido.', 'error');
+    setCartStatus('Completá nombre, WhatsApp y email para enviar el pedido.', 'error');
     cartForm.reportValidity();
     return;
   }
