@@ -1,12 +1,17 @@
 const menuButton = document.querySelector('.nav-ham');
 const mobileMenu = document.querySelector('.mob');
+const navEnd = document.querySelector('.nav-end');
 const cartButtons = document.querySelectorAll('.nav-cta');
 const cartCounts = document.querySelectorAll('.cart-count');
+const authLoginLinks = document.querySelectorAll('[data-auth-login]');
+const authRegisterLinks = document.querySelectorAll('[data-auth-register]');
 const scrollProgress = document.createElement('div');
 const productModal = document.createElement('div');
 const cartDrawer = document.createElement('div');
 const ORDER_EMAIL = 'facundo.rodriguez.pro@gmail.com';
 const CART_STORAGE_KEY = 'vyntra-cart-v1';
+const FALLBACK_WHATSAPP_URL = 'https://wa.me/5491112345678?text=Hola%20VYNTRA%2C%20quiero%20hacer%20una%20consulta.';
+const HAPPY_NATION_VIDEO_ID = '6vNnB4oLZNo';
 let cart = [];
 let activeModalProduct = null;
 let lastFocusedElement = null;
@@ -21,9 +26,9 @@ cartDrawer.innerHTML = `
   <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
     <button class="cart-close" type="button" aria-label="Cerrar carrito" data-cart-close>×</button>
     <div class="cart-head">
-      <span class="sec-tag">Pedido por email</span>
+      <span class="sec-tag">Checkout</span>
       <h2 id="cart-title">Carrito</h2>
-      <p>Completá tus datos y se abrirá un email con el pedido listo para enviar. VYNTRA coordina después por WhatsApp.</p>
+      <p>Revisa tu seleccion, completa tus datos y finaliza el pedido con pago seguro.</p>
     </div>
     <div class="cart-items"></div>
     <p class="cart-empty">Tu carrito está vacío.</p>
@@ -36,12 +41,16 @@ cartDrawer.innerHTML = `
       <label>WhatsApp<input type="tel" name="whatsapp" placeholder="+54 9 11 1234 5678" required></label>
       <label>Email<input type="email" name="email" placeholder="tu@email.com" required></label>
       <label>Mensaje<textarea name="message" rows="4" placeholder="Talle, color, ciudad o aclaración del pedido"></textarea></label>
+      <div class="cart-pay-note"><span>Pago seguro</span><strong>Tarjeta / checkout online</strong></div>
       <p class="cart-status" role="status" aria-live="polite"></p>
-      <button class="btn-outline-g cart-submit" type="submit">Enviar pedido por email</button>
+      <button class="btn-outline-g cart-submit" type="submit">Pagar</button>
     </form>
   </aside>
 `;
 document.body.appendChild(cartDrawer);
+cartDrawer.querySelector('.cart-head p').textContent = 'Revisa tu seleccion, completa tus datos y finaliza el pedido con pago seguro.';
+cartDrawer.querySelector('.cart-empty').textContent = 'Tu carrito esta vacio.';
+cartDrawer.querySelector('.cart-submit').textContent = 'Pagar';
 
 productModal.className = 'product-modal';
 productModal.setAttribute('aria-hidden', 'true');
@@ -76,6 +85,151 @@ const cartStatusEl = cartDrawer.querySelector('.cart-status');
 
 modalOptions.className = 'product-modal-options';
 modalPrice.insertAdjacentElement('afterend', modalOptions);
+
+const updateAuthNavigation = async () => {
+  if (!authLoginLinks.length && !authRegisterLinks.length) return;
+
+  try {
+    const response = await fetch('api/session.php', {
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' }
+    });
+
+    if (!response.ok) return;
+    const data = await response.json();
+    if (!data.authenticated || !data.user) return;
+
+    const firstName = String(data.user.name || 'Cuenta').trim().split(/\s+/)[0] || 'Cuenta';
+    authLoginLinks.forEach((link) => {
+      link.textContent = data.user.isAdmin ? 'Admin' : `Hola, ${firstName}`;
+      link.href = data.user.isAdmin ? 'admin/index.php' : 'mis_pedidos.php';
+      link.title = data.user.isAdmin ? 'Panel administrador' : 'Mis pedidos';
+      link.classList.add('is-authenticated');
+    });
+
+    authRegisterLinks.forEach((link) => {
+      link.textContent = 'Salir';
+      link.href = 'logout.php';
+      link.classList.add('is-authenticated');
+    });
+  } catch {
+    // El sitio puede abrirse como archivo local antes de pasar por XAMPP.
+  }
+};
+
+updateAuthNavigation();
+
+const trackVisit = () => {
+  const payload = JSON.stringify({
+    path: `${window.location.pathname}${window.location.search}`,
+    title: document.title,
+    referrer: document.referrer
+  });
+
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon('api/track_visit.php', new Blob([payload], { type: 'application/json' }));
+      return;
+    }
+
+    fetch('api/track_visit.php', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: payload
+    }).catch(() => {});
+  } catch {
+    // Puede fallar si se abre como archivo local.
+  }
+};
+
+const createWhatsappButton = async () => {
+  const button = document.createElement('a');
+  button.className = 'whatsapp-float';
+  button.href = FALLBACK_WHATSAPP_URL;
+  button.target = '_blank';
+  button.rel = 'noopener';
+  button.setAttribute('aria-label', 'Consultar por WhatsApp');
+  button.innerHTML = '<span>WhatsApp</span>';
+  document.body.appendChild(button);
+
+  try {
+    const response = await fetch('api/site_config.php', {
+      credentials: 'same-origin',
+      headers: { Accept: 'application/json' }
+    });
+    if (!response.ok) return;
+    const config = await response.json();
+    if (config.whatsappUrl) button.href = config.whatsappUrl;
+  } catch {
+    // Fallback configurado arriba.
+  }
+};
+
+trackVisit();
+createWhatsappButton();
+
+const createAmbientController = () => {
+  if (!navEnd) return null;
+
+  const button = document.createElement('button');
+  button.className = 'ambient-toggle';
+  button.type = 'button';
+  button.setAttribute('aria-pressed', 'false');
+  button.title = 'Happy Nation - Ace of Base';
+  button.innerHTML = '<span class="ambient-dot" aria-hidden="true"></span><span class="ambient-label">Ambiente</span>';
+
+  const cartButton = navEnd.querySelector('.nav-cta');
+  navEnd.insertBefore(button, cartButton || navEnd.firstChild);
+
+  const player = document.createElement('div');
+  player.className = 'ambient-player';
+  player.setAttribute('aria-hidden', 'true');
+  player.innerHTML = `
+    <div class="ambient-player-head">
+      <span>Happy Nation</span>
+      <button type="button" aria-label="Cerrar musica" data-ambient-close>&times;</button>
+    </div>
+    <div class="ambient-frame"></div>
+  `;
+  document.body.appendChild(player);
+
+  const frameWrap = player.querySelector('.ambient-frame');
+  const closeButton = player.querySelector('[data-ambient-close]');
+  let isOpen = false;
+
+  const stopAmbient = () => {
+    if (!isOpen) return;
+    frameWrap.innerHTML = '';
+    isOpen = false;
+    player.classList.remove('is-open');
+    player.setAttribute('aria-hidden', 'true');
+    button.classList.remove('is-on');
+    button.setAttribute('aria-pressed', 'false');
+  };
+
+  const startAmbient = () => {
+    if (isOpen) {
+      stopAmbient();
+      return;
+    }
+
+    const src = `https://www.youtube.com/embed/${HAPPY_NATION_VIDEO_ID}?autoplay=1&loop=1&playlist=${HAPPY_NATION_VIDEO_ID}&rel=0`;
+    frameWrap.innerHTML = `<iframe title="Happy Nation - Ace of Base" src="${src}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    isOpen = true;
+    player.classList.add('is-open');
+    player.setAttribute('aria-hidden', 'false');
+    button.classList.add('is-on');
+    button.setAttribute('aria-pressed', 'true');
+  };
+
+  button.addEventListener('click', startAmbient);
+  closeButton?.addEventListener('click', stopAmbient);
+  window.addEventListener('pagehide', stopAmbient);
+  return button;
+};
+
+createAmbientController();
 
 menuButton?.addEventListener('click', () => {
   const isOpen = mobileMenu.classList.toggle('open');
@@ -330,6 +484,26 @@ const buildOrderEmail = (customer) => {
 
   lines.push('', `Total: ${formatPrice(cartTotal())}`, '', 'Responder al cliente por WhatsApp para coordinar pago, talle, color, envío o retiro.');
   return lines.join('\n');
+};
+
+const startStripeCheckout = async (customer) => {
+  const response = await fetch('api/checkout.php', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      customer,
+      items: cart,
+      total: cartTotal()
+    })
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data.ok || !data.checkoutUrl) {
+    throw new Error(data.error || 'No se pudo iniciar el pago.');
+  }
+
+  return data.checkoutUrl;
 };
 
 cart = loadCart();
@@ -597,7 +771,7 @@ cartDrawer.addEventListener('click', (event) => {
   if (event.target.closest('[data-cart-remove]')) removeCartItem(id);
 });
 
-cartForm?.addEventListener('submit', (event) => {
+cartForm?.addEventListener('submit', async (event) => {
   event.preventDefault();
 
   if (!cart.length) {
@@ -620,11 +794,13 @@ cartForm?.addEventListener('submit', (event) => {
     return;
   }
 
-  const subject = `Pedido VYNTRA - ${customer.name}`;
-  const body = buildOrderEmail(customer);
-  const emailUrl = `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  setCartStatus(`Se abrió el email dirigido a ${ORDER_EMAIL}.`, 'ok');
-  window.location.href = emailUrl;
+  try {
+    setCartStatus('Preparando pago seguro...', 'ok');
+    const checkoutUrl = await startStripeCheckout(customer);
+    window.location.href = checkoutUrl;
+  } catch (error) {
+    setCartStatus(error.message || 'No se pudo iniciar el pago. Revisa la configuracion de pago.', 'error');
+  }
 });
 
 document.querySelectorAll('.contact-form').forEach((form) => {

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Título de la tienda para SEO y accesibilidad -->
+  <title>VYNTRA Mini Store</title>
+  <!-- Enlace a la hoja de estilos CSS refactorizada -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Cabecera principal del sitio con navegación fija -->
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navegacion principal">
+      <!-- Logo de la marca -->
+      <a class="brand" href="#inicio" aria-label="Inicio VYNTRA">
+        <img src="../images/logoprincipaltexto-removebg-preview.png" alt="VYNTRA">
+      </a>
+
+      <!-- Enlaces de navegación rápida -->
+      <div class="nav-links">
+        <a href="#ropa">Ropa</a>
+        <a href="#sobre">Marca</a>
+        <a href="#gallery">Galeria</a>
+        <a href="#kits">Kits</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+
+      <!-- Botón para abrir el carrito lateral con contador de ítems -->
+      <button class="nav-cart" type="button" id="open-cart">
+        Carrito <span id="cart-count">0</span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Sección de Héroe (Hero) con la imagen de la Nano Banana generada -->
+    <section class="hero" id="inicio">
+      <div class="hero-bg">
+        <img src="../images/products/inicio.png" alt="Drop Especial">
+      </div>
+      <div class="hero-content">
+        <div class="hero-eyebrow">
+          <span></span>
+          <p>Drop Otono - Invierno 2025</p>
+        </div>
+        <h1>VYNTRA <strong>Silent Power</strong></h1>
+        <div class="hero-row">
+          <p>El drop mas exclusivo de la temporada. Una fusión de diseño minimalista, estética urbana y presencia fuerte inspirada en la Nano Banana.</p>
+          <div class="hero-actions">
+            <a class="btn btn-light" href="#ropa">Explorar coleccion</a>
+            <a class="btn btn-ghost" href="#gallery">Ver Galeria</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fila de productos destacados iniciales -->
+    <section class="product-row" id="ropa">
+      <!-- Producto 1: Camisa Oversized -->
+      <article class="product-card product-small">
+        <img src="../images/products/camisa-oversized-blanca-front.jpg" alt="Camisa Oversized Blanca">
+        <div>
+          <span>Ropa - 01</span>
+          <h2>Camisa Oversized</h2>
+          <p>Logo VYNTRA en el pecho. Tela premium, corte amplio y edicion limitada.</p>
+          <div class="product-bottom">
+            <strong>$129.990</strong>
+            <button type="button" data-add="3">Agregar</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Producto destacado central: Not Your Average -->
+      <article class="product-card product-featured">
+        <img src="../images/products/not-average-indigo-front.jpg" alt="Not Your Average">
+        <div>
+          <span>Destacado</span>
+          <h2>Not Your Average</h2>
+          <p>La pieza central de la temporada. Estampado tonal sobre azul indigo y firma en el dorso.</p>
+          <div class="product-bottom">
+            <strong>$109.990</strong>
+            <button type="button" data-add="7">Agregar</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Producto 3: Signature Grey -->
+      <article class="product-card product-small">
+        <img src="../images/products/signature-grey-front.jpg" alt="Signature Grey">
+        <div>
+          <span>Ropa - 03</span>
+          <h2>Signature Grey</h2>
+          <p>Firma VYNTRA estampada al frente. Corte relajado y tono gris pizarra.</p>
+          <div class="product-bottom">
+            <strong>$99.990</strong>
+            <button type="button" data-add="9">Agregar</button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Sección de estadísticas y números clave de la marca -->
+    <section class="stats-strip" aria-label="Datos de la marca">
+      <div><strong>48+</strong><span>Disenos activos</span></div>
+      <div><strong>12</strong><span>Nichos disponibles</span></div>
+      <div><strong>100%</strong><span>Personalizado</span></div>
+    </section>
+
+    <!-- Sección de información sobre la marca y filosofía -->
+    <section class="brand-section" id="sobre">
+      <div class="brand-copy">
+        <span class="section-tag">01 - Sobre la marca</span>
+        <h2>Diseno con intencion, produccion limitada.</h2>
+        <p>VYNTRA nace para quienes buscan prendas limpias, fuertes y reconocibles sin caer en exceso visual. Cada drop trabaja series cortas, graficas precisas y siluetas amplias.</p>
+        <div class="brand-points">
+          <span>Series cortas</span>
+          <span>Fit oversized</span>
+          <span>Detalles signature</span>
+        </div>
+      </div>
+      <!-- Logo o emblema circular de la marca -->
+      <div class="brand-mark">
+        <img src="../images/logoprincipal.png" alt="Emblema VYNTRA">
+      </div>
+    </section>
+
+    <!-- Galeria: Galería visual de fotos de estilo de vida -->
+    <section class="gallery" id="gallery">
+      <div class="section-head">
+        <span class="section-tag">02 - Galeria</span>
+        <h2>Silent <em>Power</em></h2>
+      </div>
+
+      <div class="gallery-grid">
+        <article class="look-card tall">
+          <img src="../images/products/signature-back-indigo-hover.jpg" alt="Not Your Average lifestyle">
+          <span>Not Your Average</span>
+        </article>
+        <article class="look-card tall">
+          <img src="../images/products/silent-power-blanco-hover.jpg" alt="Signature Back">
+          <span>Signature Back</span>
+        </article>
+        <article class="look-card">
+          <img src="../images/products/hoodie-silent-power-hover.jpg" alt="VYNTRA Silent Power">
+          <span>VYNTRA - Not For Everyone</span>
+        </article>
+        <article class="look-card">
+          <img src="../images/products/signature-grey-hover.jpg" alt="Signature Drop">
+          <span>Signature Drop</span>
+        </article>
+      </div>
+    </section>
+
+    <!-- Editorial: Destacado de temporada con selector de color interactivo -->
+    <section class="editorial" id="destacado">
+      <div class="editorial-image">
+        <img src="../images/products/not-average-indigo-front.jpg" alt="Not Your Average">
+      </div>
+      <div class="editorial-info">
+        <span class="section-tag">Pieza destacada - Otono 2025</span>
+        <h2>Not Your <em>Average</em></h2>
+        <p>Disenada para quienes no se conforman. Estampado tonal sobre azul indigo con firma exclusiva en el dorso. Produccion limitada a 50 unidades.</p>
+        <div class="option-list">
+          <button class="active" type="button">Indigo</button>
+          <button type="button">Blanco</button>
+          <button type="button">Gris</button>
+          <button type="button">Negro</button>
+        </div>
+        <strong class="editorial-price">$109.990</strong>
+        <button class="btn btn-dark" type="button" data-add="7">Agregar al carrito</button>
+      </div>
+    </section>
+
+    <!-- Sección de proceso: Pasos del desarrollo de producto -->
+    <section class="process-section" id="proceso">
+      <div class="section-head">
+        <span class="section-tag">03 - Proceso</span>
+        <h2>Como se construye <em>cada drop</em></h2>
+      </div>
+
+      <div class="process-grid">
+        <article><span>01</span><h3>Concepto</h3><p>Definimos tono, grafica, fit y presencia visual.</p></article>
+        <article><span>02</span><h3>Seleccion</h3><p>Elegimos textiles, colores y accesorios compatibles.</p></article>
+        <article><span>03</span><h3>Produccion</h3><p>Trabajamos series limitadas para cuidar terminacion.</p></article>
+        <article><span>04</span><h3>Entrega</h3><p>Cada pedido sale revisado, empaquetado y listo.</p></article>
+      </div>
+    </section>
+
+    <!-- Catálogo de productos completo, poblado dinámicamente mediante JS -->
+    <section class="catalog-section">
+      <div class="section-head">
+        <span class="section-tag">04 - Catalogo</span>
+        <h2>Productos disponibles</h2>
+      </div>
+      <div class="catalog-grid" id="product-list" aria-live="polite"></div>
+    </section>
+
+    <!-- Kits de temporada combinados -->
+    <section class="kits-section" id="kits">
+      <div class="kits-top">
+        <div>
+          <span class="section-tag">05 - Extras de temporada</span>
+          <h2>Kits <em>de Temporada</em></h2>
+        </div>
+        <p>Colecciones curadas con ropa y accesorios seleccionados para regalar o vivir el estilo completo.</p>
+      </div>
+
+      <div class="kits-grid">
+        <article class="kit-card">
+          <img src="../images/products/camisa-oversized-blanca-front.jpg" alt="Kit Blanco">
+          <div><span>Verano 2025</span><h3>Kit Blanco</h3><p>Camisa Oversized + Llavero + Perfume Solar</p><strong>$89.000</strong></div>
+        </article>
+        <article class="kit-card">
+          <img src="../images/products/not-average-indigo-front.jpg" alt="Kit Indigo">
+          <div><span>Otono 2025</span><h3>Kit Indigo</h3><p>Remera Not Your Average + Cadena + Dije VYNTRA</p><strong>$155.000</strong></div>
+        </article>
+        <article class="kit-card">
+          <img src="../images/products/signature-grey-front.jpg" alt="Kit Signature">
+          <div><span>Invierno 2025</span><h3>Kit Signature</h3><p>Signature Grey + Cadena + Perfume Intenso</p><strong>$130.000</strong></div>
+        </article>
+        <article class="kit-card">
+          <img src="../images/products/hoodie-silent-power-front.jpg" alt="Kit Silent Power">
+          <div><span>Edicion especial</span><h3>Kit Silent Power</h3><p>5 piezas + caja exclusiva + envio prioritario</p><strong>$195.000</strong></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Información de servicios adicionales (Envíos, Cambios, etc.) -->
+    <section class="service-section" id="envios">
+      <article>
+        <span class="section-tag">06 - Envios</span>
+        <h3>Despacho cuidado</h3>
+        <p>Preparamos cada pedido con revision previa y empaque protegido.</p>
+      </article>
+      <article>
+        <span class="section-tag">07 - Cambios</span>
+        <h3>Proceso simple</h3>
+        <p>Los cambios se gestionan dentro de los 10 dias posteriores a la recepcion.</p>
+      </article>
+      <article>
+        <span class="section-tag">08 - Personalizacion</span>
+        <h3>Pedido a medida</h3>
+        <p>Podemos orientar talles, armar kits y adaptar combinaciones.</p>
+      </article>
+    </section>
+
+    <!-- Banda de contacto y consultas directas -->
+    <section class="contact-band" id="contacto">
+      <div>
+        <span class="section-tag">09 - Contacto</span>
+        <h2>Armemos tu proximo drop.</h2>
+        <p>Consultas de stock, talles, envios o pedidos personalizados. Te orientamos antes de cerrar la compra.</p>
+      </div>
+      <a class="btn btn-light" href="mailto:ventas@vyntra.com">Enviar consulta</a>
+    </section>
+  </main>
+
+  <!-- Pie de página general con enlaces y logo -->
+  <footer class="footer">
+    <div>
+      <img src="../images/logoprincipaltexto.png" alt="VYNTRA">
+      <p>Prendas y accesorios de autor para construir identidad con intencion.</p>
+    </div>
+    <nav aria-label="Secciones del pie">
+      <a href="#sobre">Marca</a>
+      <a href="#gallery">Galeria</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+  </footer>
+
+  <!-- Carrito lateral deslizante (Drawer) para previsualización de compra -->
+  <div class="cart-overlay" id="cart-overlay" aria-hidden="true"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Carrito de compras" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <span class="section-tag">Compra ficticia</span>
+        <h2>Tu carrito</h2>
+      </div>
+      <!-- Botón para cerrar el carrito -->
+      <button class="icon-button" type="button" id="close-cart" aria-label="Cerrar carrito">x</button>
+    </div>
+
+    <!-- Contenedor de ítems añadidos, se renderiza con JS -->
+    <div class="cart-items" id="cart-items"></div>
+
+    <!-- Resumen y total de la compra -->
+    <div class="drawer-summary">
+      <div><span>Subtotal</span><strong id="subtotal">$0</strong></div>
+      <div><span>Envio</span><span>Gratis</span></div>
+      <div class="summary-total"><span>Total</span><strong id="total">$0</strong></div>
+      <!-- Botón para avanzar al Checkout -->
+      <button class="btn btn-dark full" type="button" id="checkout-button">Finalizar compra</button>
+      <p>Es una compra simulada, no se procesa ningun pago real.</p>
+    </div>
+  </aside>
+
+  <!-- Modal del Checkout de compra ficticia -->
+  <div class="modal" id="checkout-modal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <!-- Botón de cierre del modal -->
+      <button class="icon-button close-modal" type="button" id="close-modal" aria-label="Cerrar">x</button>
+      <span class="section-tag">Checkout</span>
+      <h2 id="modal-title">Datos de compra</h2>
+
+      <!-- Formulario para completar los datos de envío -->
+      <form id="checkout-form">
+        <label>Nombre completo<input type="text" id="customer-name" placeholder="Ej: Facundo Perez" required></label>
+        <label>Email<input type="email" id="customer-email" placeholder="Ej: correo@email.com" required></label>
+        <label>Direccion de envio<input type="text" id="customer-address" placeholder="Ej: Calle 123" required></label>
+        <button class="btn btn-dark full" type="submit">Confirmar compra</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notificación Toast emergente para acciones (ej. producto agregado) -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Script con la lógica interactiva de la tienda -->
+  <script src="js/app.js"></script>
+</body>
+</html>
